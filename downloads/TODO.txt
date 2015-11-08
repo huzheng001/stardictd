@@ -1,0 +1,3 @@
+Todo
+
+    Update authentication to use md5 salt, which leads by "StarDict".

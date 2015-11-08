@@ -1,0 +1,9 @@
+<search
+name="StarDict"
+description="StarDict Dictionary Query"
+method="GET"
+action="http://www.stardict.org/query.php"
+queryCharset="UTF-8"
+>
+<input name="q" user>
+</search> 

@@ -1,0 +1,41 @@
+#!/bin/bash
+#
+# cron script to change download dir link of stardict.org.
+# Put this file at /etc/cron.daily/
+#
+# Written by Hu Zheng.
+
+function strcat ()
+{
+    local s1_val s2_val
+
+    s1_val=${!1}            # indirect variable expansion
+    s2_val=${!2}
+    eval "$1"=\'"${s1_val}${s2_val}"\'
+}
+
+function mk_random_password ()
+{
+    local i=0
+    local passwd=""
+    local rand_char
+
+    while [ $i -lt 8 ]; do
+        let "i = $i + 1"
+        let "rand_char = RANDOM % 9 + 1"
+        strcat passwd rand_char
+    done
+
+    let "$1"=$passwd
+}
+
+mk_random_password password
+
+linkpath=/opt/web/stardict.org/download/
+olddirlink=`ls $linkpath | grep tmp`
+strcat linkpath olddirlink
+rm -f $linkpath
+
+newlink=/opt/web/stardict.org/download/tmp
+strcat newlink password
+ln -s /opt/stardict $newlink

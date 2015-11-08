@@ -1,0 +1,17 @@
+Just extract the files is OK.
+
+Then compile stardict-client, strip it and copy it to "/var/www/cgi-bin/".
+
+Install "policycoreutils-python" and "checkpolicy" packages.
+Run:
+grep stardict-client /var/log/audit/audit.log | audit2allow -M mypol
+semodule -i mypol.pp
+Then stardict-client will can connect to tcp_socket!
+
+You need to edit php.ini, set:
+magic_quotes_gpc = Off
+if you are using php version before 5.4.0!
+
+You may need to edit backend.php file, change:
+$cmd="../../cgi-bin/stardict-client ";
+to fit your real "stardict-client" file path!

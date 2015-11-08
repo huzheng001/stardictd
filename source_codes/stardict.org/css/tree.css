@@ -1,0 +1,14 @@
+.tree {
+	padding-left:0px;
+}
+.tree ul {
+	margin-left:20px;
+	padding-left:0px;
+}
+.tree li{
+	list-style-type:none;
+	vertical-align:middle;
+}
+.tree li a{
+	padding-left:3px;
+}

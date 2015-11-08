@@ -1,0 +1,249 @@
+StarDict-Protocol 0.3
+
+1. Protocol Overview
+
+The StarDict Server Protocol is a TCP transaction based query/response protocol that allows a client to access dictionary definitions from a set of natural language dictionary databases. It is inspired by DICT protocol, see rfc2229.
+
+1.1 Request
+Request are composed by some commands. Each command is ended by a '\n' character, and has the max length as 10K bytes, including the ending '\n'.
+
+1.2. Command
+Command can has parameters, they are separated by ONE Space character. If the parameter contain Space character, just write '\' then follow Space, or "\\ " in C language, if the parameter contain '\' character, just write two '\' character, or "\\\\" in C language, if contain new line, write '\' and 'n', or "\\n" in C. That's all.
+The parameter may be empty, for example, "lookup  a" will be interpreted as "lookup", "" and "a", so two Space characters means a empty parameter is in them. The same, "lookup  " will be interpreted as "lookup", "", and "", the last parameter is empty too.
+
+1.3 Responses
+The responses are composed by a status string and the real content.
+Status string indicate the server's response to the last command received from the client. The status string is ended by a '\n' character, it begin with a 3 digit numeric code which is sufficient to distinguish all responses, then a Space character and some discription of this response. For example "420 server temporarily unavailable\n".
+
+Here are some general status codes:
+#define CODE_HELLO                   220
+#define CODE_GOODBYE                 221
+#define CODE_OK                      250
+#define CODE_TEMPORARILY_UNAVAILABLE 420
+#define CODE_SYNTAX_ERROR            500
+#define CODE_DENIED                  521
+#define CODE_DICTMASK_NOTSET         522
+
+The real content is decided by the corresponding command. It may be ommited if the status string indicates this.
+
+
+2. Command and Response Details
+
+2.1 Initial Connection
+When a client initially connects to a StarDict server, a code 220 is sent if the client's IP is allowed to connect: "220 hostname stardictd-version <auth> msg-id". The last sequence of characters in the banner is a msg-id. This message id will be used by the client when formulating the authentication string used in the AUTH command. If the client's IP is not allowed to connect, then a code 530 is sent instead: "530 Access denied". Transient failure responses are also possible: "420 Server temporarily unavailable", "421 Server shutting down at operator request".
+
+2.2 The CLIENT Command
+This command allows the client to provide information about itself for possible logging and statistical purposes.  All clients SHOULD send this command after connecting to the server.
+Command: "client protocol_version client_name". The protocol_version should be "0.3" currently.
+Responses: "CODE_OK", or "CODE_DENIED You need to update the client."
+
+2.3 The QUIT Command
+This command is used by the client to cleanly exit the server.
+Command: "quit".
+Responses: "CODE_GOODBYE".
+
+2.4 The AUTH Command
+The client can authenticate itself to the server using a username and password. The authenticated user can query custom dictionaries and has the own preferences. 
+Command: "auth username auth-string"
+The auth-string is the MD5 checksum of the concatenation of the msg-id (obtained from the initial banner) and the user password's MD5 checksum.
+Responses: "CODE_OK", "CODE_DENIED auth denied".
+
+2.5 The QUERY Command
+Command: "query word"
+Responses: "CODE_OK", "CODE_DICTMASK_NOTSET".
+If the response is ""CODE_OK", the DictResult will be followed.
+
+Here is the format of DictResult:
+First, a String(Terminated by '\0'), which means the original query word.
+Then, the Dict Sequences, each Dict sequence begin with a String which means the dict name, empty dict name means the ending Dict sequence.
+The Word Sequences are followed by the dict name, the first is the word String, empty word means the ending Word sequence.
+The Data Sequences are followd by the word, Data sequence begin with a 32-bit number in network order, this number means the followed Data's length, 0 means the ending Data Sequence. The Data begin with a sametypesequence character, then the content, and so on. For sametypesequence, you can read DICTFILE_FORMAT which can be found at http://stardict.sourceforge.net/DICTFILE_FORMAT.
+
+Here is a example of DictResult:
+apples\0 // The original query word.
+book name 1\0 // The dictionary name.
+word1\0 // The first word.
+Data1
+Data2
+0 // 0 means the ending Data sequence.
+word2\0 // The second word.
+Data1
+0
+\0 // This empty word means the ending Word sequence.
+book name 2\0 // The second dictionary's name.
+word\0
+Data1
+0
+\0
+\0 // This empty book name means the ending Dict sequence.
+
+2.6 The LOOKUP Command
+Command: "lookup stardict_format_word"
+The stardict_format_word has these types: 1. Pattern match string, such as "a*p?le". 2. Fuzzy search string, it begin with '/' character, such as "/apple". 3. Full-text search string, it begin with '|' character, such as "|apple". 4. Normal lookup string, such as "apple pie". For the detail rules, see StarDict help.
+Responses: "CODE_OK", "CODE_DICTMASK_NOTSET".
+If the response is ""CODE_OK", the DictResult will be followed first, then the ListResult.
+
+Here is the format of ListResult:
+First, a String, which means the list type, it can be "l", "r", "f", and "d". "l" means normal lookup word list, "r" means Glob-style pattern matching word list, "f" means fuzzy query word list, "d" means full-text search word list.
+If the list type is "l", "r" or "f", the word sequences will be followed, which end by a empty String.
+If the list type is "d", the dict name sequences is followed, then the word sequences, the dict name sequences is ended by a empty String too.
+
+Here is a example of List Result:
+l\0 // normal lookup word list.
+apple\0
+apple pie\0
+\0
+
+Another example:
+d\0 // full-text search word list.
+dict name 1\0
+apple\0
+apple pie\0
+\0
+dict name 2\0
+word1\0
+\0
+\0 // The ending dict name sequence.
+
+2.7 The DEFINE Command
+Command "define word"
+Responses: "CODE_OK", "CODE_DICTMASK_NOTSET".
+If the response is ""CODE_OK", the DictResult will be followed.
+The difference between QUERY and DEFINE command is they have different search strategy, QUERY will search each dictionary for orginal word and similar word, DEFINE will search dictionries for origanl word, if found, show the DictResult, if not found, then try similar word.
+So, if the first dictionary contain definition for "apple", and the second dictionary contain definitoin for "apples", QUERY will get both dictionaries' definition, while DEFINE will only show the first dictionary's definition.
+
+2.8 The SELECTQUERY Command
+Command "selectquery selected_word"
+Responses: "CODE_OK", "CODE_DICTMASK_NOTSET".
+If the response is ""CODE_OK", the DictResult will be followed.
+The difference between QUERY and SELECTQUERY is that SELECTQUERY will try to analyze the selected_word, while QUERY will search it directly. So SELECTQUERY is suitable to search the user selected words, while QUERY is suitable to search the user inputed words.
+
+2.9 The REGISTER Command
+Command: "register username password-md5sum email".
+You needn't send the password to the server, but only password's MD5 checksum, so even the server won't know your original password.
+Responses: "CODE_OK", "CODE_DENIED deny reason".
+
+2.10 The CHANGE_PASSWD Command
+Command: "change_password username old_password new_password-md5sum".
+You need to send the original old password to the server, so even others get to know your password-md5sum, he/she still can't change your password.
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.11 The SET_DICT_MASK Command
+Command: "setdictmask dict1\ dict2".
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.12 The GET_DICT_MASK Command
+Command: "getdictmask"
+Responses: "CODE_OK", "CODE_DENIED".
+The dictmask String will be followed if reponse is CODE_OK, it is in XML format.
+Here is a example:
+<dict><uid>dict1</uid><bookname>dict name</bookname><wordcount>1</wordcount></dict>
+
+2.13 The MAX_DICT_COUNT Command
+Command: "maxdictcount"
+Responses: "CODE_OK", "CODE_DENIED".
+The maxdictcount String will be followed if reponse is CODE_OK.
+
+2.14 The DIR_INFO Command
+Command: "dirinfo /zh_CN/"
+Responses: "CODE_OK", "CODE_DENIED".
+The dirinfo String will be followed if reponse is CODE_OK, it is in XML format.
+Here is a example:
+<userlevel>0</userlevel>
+<parent>/</parent>
+<dir><name>Chinese</name><dirname>zh_CN</dirname><dictcount>1</dictcount></dir>
+<dict><islink>1</islink><level>1</level><uid>dict1</uid><bookname>dict 1</bookname><wordcount>1</wordcount></dict>
+
+2.15 The DICT_INFO Command
+Command: "dictinfo dict1"
+Responses: "CODE_OK", "CODE_DENIED".
+The dictinfo String will be followed if reponse is CODE_OK, it is in XML format.
+Here is a example:
+<dictinfo><bookname>dict 1</bookname><wordcount>1</wordcount><synwordcount>1</synwordcount><author>someone</author><email>a@b.com</email><website>http://b.com</website><description>created by someone</description><data>2006.9.17</date><download>http://www.stardict.org/downloadit.php?file=a.tar.bz2</download></dictinfo>
+
+2.16 The USER_LEVEL Command
+Only root can use this command.
+Command: "userlevel username fromlevel tolevel"
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.17 The CMD_GET_USER_LEVEL Command
+Command: "getuserlevel"
+Responses: "CODE_OK", "CODE_DENIED".
+The userlevel String will be followed if reponse is CODE_OK.
+
+2.18 The SET_COLLATE_FUNC Command
+Command: "setcollatefunc 1"
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.19 The GET_COLLATE_FUNC Command
+Command: "getcollatefunc"
+Responses: "CODE_OK", "CODE_DENIED".
+The collatefunc String will be followed if reponse is CODE_OK.
+
+2.20 The PREVIOUS Command
+Command: "previous apple"
+Responses: "CODE_OK", "CODE_DENIED".
+The previous word list Strings will be followed if reponse is CODE_OK.
+This String sequences are ended by a empty String.
+
+2.21 The NEXT Command
+Command: "next apple"
+Responses: "CODE_OK", "CODE_DENIED".
+The next word list Strings will be followed if reponse is CODE_OK.
+This String sequences are ended by a empty String.
+
+2.22 The SET_LANGUAGE Command
+Command: "setlanguage zh_CN"
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.23 The GET_LANGUAGE Command
+Command: "getlanguage"
+Responses: "CODE_OK", "CODE_DENIED".
+The language String will be followed if reponse is CODE_OK.
+
+2.24 The SET_EMAIL Command
+Command: "setemail a@b.com"
+Responses: "CODE_OK", "CODE_DENIED".
+
+2.25 The GET_EMAIL Command
+Command: "getemail"
+Responses: "CODE_OK", "CODE_DENIED".
+The email String will be followed if reponse is CODE_OK.
+
+2.26 The FROMTO Command
+Command: "fromto"
+Responses: "CODE_OK", "CODE_DENIED".
+The fromto XML String will be followed if reponse is CODE_OK.
+
+2.27 The COOKIE Command
+Command: "cookie dict1\ dict2"
+Responses: "CODE_OK", "CODE_DENIED".
+Set the dictmask temporarally.
+
+2.28 The DICTS_LIST Command
+Command: "dictslist dict1\ dict2"
+Responses: "CODE_OK", "CODE_DENIED".
+The dictmask XML String will be followed if reponse is CODE_OK.
+
+2.29 The GET_ADINFO Command
+Command: "getadinfo"
+Responses: "CODE_OK", "CODE_DENIED".
+The adinfo XML String will be followed if reponse is CODE_OK.
+
+
+
+3. More information
+
+StarDict website:
+http://code.google.com/p/stardictd/
+http://code.google.com/p/stardict-3/
+http://www.stardict.org
+http://www.stardict.cn
+http://stardict.sourceforge.net
+
+
+If you have any questions, email me. :)
+
+Hu Zheng <huzheng001@gmail.com>
+http://www.huzheng.org
+2007.12.10

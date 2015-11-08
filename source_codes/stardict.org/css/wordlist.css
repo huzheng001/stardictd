@@ -1,0 +1,9 @@
+.son {background-color: #9DD4FF; cursor: pointer;}
+.fulltext_list ul {
+	margin-left:10px;
+	padding-left:0px;
+}
+.fulltext_list li{
+	list-style-type:none;
+	vertical-align:middle;
+}

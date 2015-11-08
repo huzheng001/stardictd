@@ -1,0 +1,101 @@
+1) Build stardictd:
+==============================
+a) Create stardictd account.
+shell> adduser stardictd
+b) Upload stardictd-0.4.tar.xz to /home/stardictd/
+shell> tar -xJvf stardictd-0.4.tar.xz
+shell> cd stardictd-0.4
+shell> ./configure
+shell> make
+shell> strip src/stardictd
+
+2) Configure mysql:
+==============================
+Running stardictd needs mysql installed, you can download it from
+http://www.mysql.com
+
+For simplicity, we assume that the database name, user name and
+user password are all 'stardict', But you can change this if you want.
+
+a) Add a new user and a new database:
+shell> mysql -uroot -p
+mysql> CREATE DATABASE stardict;
+mysql> GRANT ALL ON stardict.* TO stardict@localhost IDENTIFIED BY 'stardict';
+mysql> quit
+
+b) Create tables:
+shell> mysql -ustardict -Dstardict -p < /home/stardictd/stardictd-0.4/etc/stardict.sql
+password: stardict
+
+c) Edit /home/stardictd/stardictd.conf
+=============================
+Copy default configure file:
+shell> cp stardictd-0.4/etc/stardictd.conf ~/
+Then edit this file to suit your needs.
+
+Notice: you sould "chmod 0600 stardictd.conf" to make this file is not readable by other users, as them contains the database user password.
+
+Note: if you changed the database user password, you need to modify
+"stardictd.conf" too.
+
+Note: you can edit [info]/ad_info to your own website link.
+
+
+3) Prepare dictionary files.
+Extract the dictionary files into "/usr/share/stardict/dic".
+Then run "/home/stardictd/stardictd-0.4/src/tools/genxmlfiles" as root to generate dictionary configure files.
+
+You can edit them manually too.
+Edit "/usr/share/stardict/dic/stardictd.xml", its content can be:
+============
+<subdir>zh_CN</subdir>
+============
+So stardictd will read "zh_CN/stardictd.xml" then, this file's content can be:
+============
+<dirname>zh_CN Simplified Chinese</dirname>
+<dict>
+<path>stardict-langdao-ec-gb-2.4.2/langdao-ec-gb.ifo</path>
+<uid>landao-ec-gb</uid>
+<from>English</from>
+<to>Chinese (Simplified)</to>
+</dict>
+<dict>
+<path>stardict-langdao-ce-gb-2.4.2/langdao-ce-gb.ifo</path>
+<uid>langdao-ce-gb</uid>
+<from>Chinese (Simplified)</from>
+<to>English</to>
+<level>1</level>
+<download>http://www.stardict.org/downloadit.php?file=a.tar.bz2</download>
+</dict>
+<linkdict>
+<uid>langdao-ce-gb</uid>
+</linkdict>
+============
+"uid" must be a unique string that don't contain space character.
+"<level>1</level>" means only level 1 user and above can use this dictionary.
+
+If you installed many dictionries, you may need to enlarge the max open file count by edit "/etc/security/limits.conf":
+stardictd soft nofile 10240
+stardictd hard nofile 10240
+If you login by ssh, you need to edit /etc/pam.d/login too:
+session required pam_limits.so
+
+If you installed too many dictionaries, as stardictd will mmap all the .dict.dz files into virtual memory, if the memory size of stardictd process become bigger than 4G, then there will be problem. The solution is run src/tools/undictzip, which convert .dict.dz files to .dict files, then the virtual memory size can become small again as use fopen instead of mmap.
+
+
+4) Run stardictd:
+==============================
+shell> cd stardictd-0.4/src
+shell> ./stardictd -d
+It is better not to run stardictd as root.
+
+You can add the next line into /etc/rc.local
+sudo -u stardictd /home/stardictd/stardictd-0.4/src/stardictd -d
+
+To stop the stardictd service, type:
+shell> killall stardictd
+
+
+You will find the log files as /home/stardictd/account.log and stardictd.log.
+
+Any problem, please contact Hu Zheng <huzheng001@gmail.com>.

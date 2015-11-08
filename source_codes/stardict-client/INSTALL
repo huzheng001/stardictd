@@ -1,0 +1,8 @@
+1) Build stardict-client.
+==============================
+./configure
+make
+strip src/stardict-client
+
+2) Copy stardict-client to www.stardict.org website.
+cp src/stardict-client /var/www/cgi-bin/

@@ -1,0 +1,186 @@
+/* Title bar */
+.captitol {
+	position: absolute;
+	top: 2px;
+	left: -7px;
+	margin-left:20px;
+	text-align: left;
+	font-size:13px;
+	font-weight: bold;
+	z-index: 105;
+	color: #545454;
+}
+
+/* Left Up Corner */
+.bsupesq {
+	position:absolute;
+	left: 0px;
+	width:25px;
+	height:25px;
+	background: url("../images/gfxwin/1.png");
+	background-repeat: no-repeat; 
+	background-position: top left;
+}
+
+/* Right Up Corner */
+.bsupdre {
+	position:absolute;
+	right: 0px;
+	width:25px;
+	height:25px;
+	background: url("../images/gfxwin/3.png");
+	background-repeat: no-repeat; 
+	background-position: top right;
+}
+
+/* Up Border */
+.bsupcen {
+	position:absolute;
+	right: 7px;
+	left: 25px;
+	height:25px;
+	background: url("../images/gfxwin/2.png");
+	background-repeat: repeat-x; 
+	background-position: 25px;
+}
+
+/* Left Down Corner */
+.binfesq {
+	position:absolute;
+	left: 0px;
+	width:15px;
+	height:15px;
+	background: url("../images/gfxwin/5.png");
+	background-repeat: no-repeat; 
+	background-position: bottom left;
+}
+
+/* Right Down Corner */
+.binfdre {
+	position:absolute;
+	right: 0px;
+	width:15px;
+	height:15px;
+	background: url("../images/gfxwin/7.png");
+	background-repeat: no-repeat; 
+	background-position: bottom right;
+}
+
+/* Down Border */
+.binfcen {
+	position:absolute;
+	bottom: 0px;
+	right: 15px;
+	left: 15px;
+	height:15px;
+	background: url("../images/gfxwin/6.png");
+	background-repeat: repeat-x; 
+}
+
+/* Window content */
+.txt {
+	position: absolute;
+	top: 25px;
+	bottom: 15px;
+	right: 0px;
+	left: 0px;
+	text-align: left;
+	border-left: 1px solid #979797;
+	border-right: 1px solid #979797;
+	background: url("../images/gfxwin/4.png");
+	background-repeat: repeat-x; 
+	z-index: 100;
+	background-color: #FEFEFE;
+}
+
+.interior {
+	position:absolute;
+	overflow: auto;
+	top: 44px;
+	right: 5px;
+	left: 8px;
+	bottom: 8px;
+}
+
+/* Window Foot */
+.peu {
+	position:absolute;
+	bottom: 0px;
+	width:100%;
+	height:15px;
+	text-align: left;
+	cursor: move;
+}
+
+/* Resize image */
+.botobaix {
+	position:absolute;
+	right: -15px;
+	top: 0px;
+	width:15px;
+	height:15px;
+	z-index: 150;
+	cursor: se-resize;
+}
+
+.bubble, .eyeConfig{
+	position:absolute; 
+	padding: 15px; 
+	border:1px solid #7C9099; 
+	display: none; 
+	background-color: #fff; 
+	z-index: 2; 
+	background-image:url("../images/gfxwin/bubbles/background.png"); 
+	background-position: bottom; 
+	background-repeat:repeat-x;
+}
+.bubbleout {
+	position:absolute; 
+	top: -18px; 
+	left:-1px; 
+	height:18px; 
+	width:13px; 
+	background-image:url("../images/gfxwin/bubbles/out.png");
+}
+.bubblecancel {
+	position:absolute; 
+	bottom:5px; 
+	right: 5px; 
+}
+.bubbletitle {
+	color: #4078bc;
+	font-size: 12pt;
+	font-weight: bold;
+	text-align: right;
+	margin-top: -15px;
+	margin-right: 0;
+	margin-bottom: 10px;
+}
+
+/* Apps action bar */
+.actionbar {
+	position: relative;
+	margin-top: 8px;
+	left: 3%;
+	width: 94%;
+	height: 34px;
+	background: url(../images/gfxwin/barc.png);
+	background-repeat: repeat-x; 
+	background-position: center center;
+}
+.barr {
+	position: absolute;
+	height: 34px;
+	width: 7px;
+	right: -7px;
+	background: url(../images/gfxwin/barr.png);
+	background-repeat: no-repeat; 
+}
+.barl {
+	position: absolute;
+	height: 34px;
+	width: 7px;
+	left: -7px;
+	background: url(../images/gfxwin/barl.png);
+	background-repeat: no-repeat; 
+}

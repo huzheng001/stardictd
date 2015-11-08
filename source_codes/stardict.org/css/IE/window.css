@@ -1,0 +1,80 @@
+
+/* Left Up Corner */
+.bsupesq {
+	background: url(1.png);
+}
+
+/* Right Up Corner */
+.bsupdre {
+	background: url(3.png);
+}
+
+/* Up Border */
+.bsupcen {
+	width: expression(this.parentNode.offsetWidth-25-25);
+	background: url(../../images/gfxwin/2.png);
+}
+
+
+/* Down Border */
+.binfcen {
+	width: expression(this.parentNode.offsetWidth-15-15);
+	background: url(../../images/gfxwin/6.png);
+	bottom: 0px;
+}
+
+/* Window content */
+.txt {
+	overflow: hidden;
+	background-position: top center;
+	background: url(../../images/gfxwin/4.png);
+	background-color: white;
+	background-repeat: repeat-x;
+	width: expression(this.parentNode.offsetWidth);
+	height: expression(this.parentNode.offsetHeight-47);
+
+}
+
+.interior {
+	position:absolute;
+	overflow: auto;
+	top: 43px;
+	right: 5px;
+	left: 8px;
+	bottom: 18px;
+	width: expression(this.parentNode.offsetWidth-8-5);
+	height: expression(this.parentNode.offsetHeight-2-8);
+}
+
+/* Window Foot */
+.peu {
+	position:absolute;
+	bottom: 16px;
+	width:100%;
+	height:15px;
+	text-align: left;
+	cursor: move;
+}
+
+.binfesq {
+	position:absolute;
+	left: 0px;
+	bottom: 0px;
+	width:15px;
+	height:15px;
+	background: url(5.png);
+	background-repeat: no-repeat; 
+	background-position: bottom left;
+}
+
+/* Right Down Corner */
+.binfdre {
+	position:absolute;
+	right: 0px;
+	bottom: 0px;
+	width:15px;
+	height:15px;
+	background: url(../../images/gfxwin/7.png);
+	background-repeat: no-repeat; 
+	background-position: bottom right;
+}

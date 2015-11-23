@@ -18,38 +18,178 @@ static gchar* toUtfPhonetic(const gchar *text, gsize len)
 				p+="ɑ"; break;
 			case 'C':
 				p+="ɔ"; break;
-			case 'Q':
-				p+="ʌ"; break;
+			case 'D':
+				p+="ã"; break;
 			case 'E':
 				p+="ә"; break;
-			case 'Z':
-				p+="є"; break;
-			case 'N':
-				p+="ŋ"; break;
-			case 'W':
-				p+="θ"; break;
-			case 'T':
-				p+="ð"; break;
 			case 'F':
 				p+="ʃ"; break;
-			case 'V':
-				p+="ʒ"; break;
-			case 'L':
-				p+="ɚ"; break;
+			case 'G':
+				p+="ɣ"; break;
+			case 'H':
+				p+="Ч"; break;
 			case 'I':
 				p+="i"; break;
-			case '^':
-				p+="ɡ"; break;
-			case '9':
-				p+="ˏ"; break;
+			case 'J':
+				p+="ʊ"; break;
+			case 'K':
+				p+="ʏ"; break;
+			case 'L':
+				p+="ɚ"; break;
+			case 'M':
+				p+="ɲ"; break;
+			case 'N':
+				p+="ŋ"; break;
+			case 'P':
+				p+="ɵ"; break;
+			case 'Q':
+				p+="ʌ"; break;
+			case 'R':
+				p+="ɔ"; break;
+			case 'T':
+				p+="ð"; break;
+			case 'V':
+				p+="ʒ"; break;
+			case 'W':
+				p+="θ"; break;
+			case 'X':
+				p+="Ø"; break;
+			case 'Z':
+				p+="є"; break;
 			case '5':
 				p+="'"; break;
+			case '6':
+				p+="!"; break;
+			case '7':
+				p+="͵"; break;
+			case '9':
+				p+="ˏ"; break;
+			case '_':
+				p+="ˇ"; break;
+			case '=':
+				p+="ê"; break;
+			case 'l':
+				p+="l"; break;
+			case '^':
+				p+="ɡ"; break;
+			case '\\':
+				p+="ɜ"; break;
+			case '?':
+				p+="U"; break;
+			case '@':
+				p+="S"; break;
+			case '[':
+				p+="ə"; break;
 			default:
 				p+=text[i];
 				break;
 		}
 	}
 	return stardict_markup_escape_text(p.c_str(), -1);
+}
+
+static gchar* toUtfPhonetic2(const gchar *text, glong len)
+{
+	std::string p;
+	const char *s = text;
+	const char *n;
+	std::string uc;
+	while (s-text < len) {
+		n = g_utf8_next_char(s);
+		uc.assign(s, n-s);
+		if (uc == "8")
+			p+=":";
+		else if (uc == "0")
+			p+="Ŋ";
+		else if (uc == "¾")
+			p+="ǔ";
+		else if (uc == "%")
+			p+="ɔ";
+		else if (uc == "µ")
+			p+="ě";
+		else if (uc == "³")
+			p+="ā";
+		else if (uc == "!")
+			p+="I";
+		else if (uc == "W")
+			p+="ɛ";
+		else if (uc == "&")
+			p+="U";
+		else if (uc == "…")
+			p+="ə";
+		else if (uc == "¹")
+			p+="ǐ";
+		else if (uc == "“")
+			p+="′";
+		else if (uc == "*")
+			p+="ə";
+		else if (uc == "6")
+			p+="ˋ";
+		else if (uc == "+")
+			p+="ɚ";
+		else if (uc == "”")
+			p+="´";
+		else if (uc == "‘")
+			p+="KH";
+		else if (uc == "$")
+			p+="ɑ";
+		else if (uc == "7")
+			p+="͵";
+		else if (uc == "'")
+			p+="KH";
+		else if (uc == "½")
+			p+="ō";
+		else if (uc == "¼")
+			p+="ǒ";
+		else if (uc == "¶")
+			p+="ē";
+		else if (uc == "º")
+			p+="ī";
+		else if (uc == "G")
+			p+="θ";
+		else if (uc == "9")
+			p+="ʒ";
+		else if (uc == ".")
+			p+="ʃ";
+		else if (uc == "/")
+			p+="ʒ";
+		else if (uc == "²")
+			p+="ǎ";
+		else if (uc == "#")
+			p+="æ";
+		else if (uc == "’")
+			p+="N";
+		else if (uc == "Y")
+			p+="t";
+		else if (uc == "H")
+			p+="ð";
+		else if (uc == "÷")
+			p+="ń";
+		else if (uc == "é")
+			p+="ê";
+		else if (uc == "¿")
+			p+="ū";
+		else if (uc == ")")
+			p+="ɜ";
+		else if (uc == "Ó")
+			p+="ǒ";
+		else if (uc == "ï")
+			p+="Ś";
+		else if (uc == "Ä")
+			p+="ǐ";
+		else if (uc == "\\")
+			p+="ł";
+		else if (uc == "›")
+			p+="ōō";
+		else if (uc == "‹")
+			p+="ǒǒ";
+		else if (uc == "ý")
+			p+="V";
+		else
+			p+= uc;
+		s = n;
+	}
+	return g_markup_escape_text(p.c_str(), -1);
 }
 
 static gchar *powerword_markup_escape_text(const gchar *text, gssize length)
@@ -148,6 +288,7 @@ static gchar *powerword_markup_escape_text(const gchar *text, gssize length)
 								next = n+1;
 								break;
 							case 'X':
+							case '2':
 								{
 								const gchar *tag_end = n+1;
 								while (tag_end!=end) {
@@ -157,7 +298,12 @@ static gchar *powerword_markup_escape_text(const gchar *text, gssize length)
 										tag_end++;
 								}
 								g_string_append (str, "<font color=\"blue\">");
-								gchar *tag_str = toUtfPhonetic(n+1, tag_end - (n+1));
+								gchar *tag_str;
+								if (*next == 'X') {
+									tag_str = toUtfPhonetic(n+1, tag_end - (n+1));
+								} else {
+									tag_str = toUtfPhonetic2(n+1, tag_end - (n+1));
+								}
 								g_string_append (str, tag_str);
 								g_free(tag_str);
 								g_string_append (str, "</font>");
@@ -181,10 +327,6 @@ static gchar *powerword_markup_escape_text(const gchar *text, gssize length)
 								if (previous_islink)
 									g_string_append (str, "\t");
 								g_string_append (str, "<font color=\"#008080\"><u>");
-								next = n+1;
-								break;
-							case '2':
-								// Phonetic. Need more work...
 								next = n+1;
 								break;
 							/*case ' ':
@@ -293,7 +435,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 	if (len==0)
 		return;
 	std::string *res = ((PwUserData*)user_data)->res;
-	if (strcmp(element, "词典音标")==0) {
+	if (strcmp(element, "词典音标")==0 || strcmp(element, "CB")==0) {
 		if (!res->empty())
 			*res+="<br>";
 		*res+="[<font color=\"blue\">";
@@ -301,7 +443,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 		*res+=str;
 		g_free(str);
 		*res+="</font>]";
-	} else if (strcmp(element, "单词原型")==0) {
+	} else if (strcmp(element, "单词原型")==0 || strcmp(element, "YX")==0) {
 		const gchar *oword = ((PwUserData*)user_data)->oword;
 		if (strncmp(oword, text, len)) {
 			if (!res->empty())
@@ -312,7 +454,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 			g_free(str);
 			*res+="</b>";
 		}
-	} else if (strcmp(element, "单词词性")==0) {
+	} else if (strcmp(element, "单词词性")==0 || strcmp(element, "DX")==0) {
 		if (!res->empty())
 			*res+="<br>";
 		*res+="<i>";
@@ -320,7 +462,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 		res->append(str);
 		g_free(str);
 		*res+="</i>";
-	} else if (strcmp(element, "汉语拼音")==0) {
+	} else if (strcmp(element, "汉语拼音")==0 || strcmp(element, "PY")==0) {
 		if (!res->empty())
 			*res+="<br>";
 		*res+="<font color=\"blue\"><u>";
@@ -328,7 +470,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 		res->append(str);
 		g_free(str);
 		*res+="</u></font>";
-	} else if (strcmp(element, "例句原型")==0) {
+	} else if (strcmp(element, "例句原型")==0 || strcmp(element, "LY")==0) {
 		if (!res->empty())
 			*res+="<br>";
 		*res+="<font color=\"#008080\">";
@@ -336,7 +478,7 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 		res->append(str);
 		g_free(str);
 		*res+="</font>";
-	} else if (strcmp(element, "例句解释")==0) {
+	} else if (strcmp(element, "例句解释")==0 || strcmp(element, "LS")==0) {
 		if (!res->empty())
 			*res+="<br>";
 		*res+="<font color=\"#01259A\">";
@@ -391,12 +533,13 @@ static void func_parse_passthrough(GMarkupParseContext *context, const gchar *pa
 static void func_parse_start_element(GMarkupParseContext *context, const gchar *element_name, const gchar **attribute_names, const gchar **attribute_values, gpointer user_data, GError **error)
 {
 	std::string *res = ((PwUserData*)user_data)->res;
-	if (strcmp(element_name, "基本词义")==0) {
+	if (strcmp(element_name, "基本词义")==0 || strcmp(element_name, "CY")==0) {
 		if (((PwUserData*)user_data)->first_jbcy) {
 			((PwUserData*)user_data)->first_jbcy = false;
 		} else {
 			*res+="<br><font color=\"blue\">&lt;基本词义&gt;</font>";
 		}
+	// ToDo: These need to fix!
 	} else if (strcmp(element_name, "继承用法")==0) {
 		*res+="<br><font color=\"blue\">&lt;继承用法&gt;</font>";
 	} else if (strcmp(element_name, "习惯用语")==0) {

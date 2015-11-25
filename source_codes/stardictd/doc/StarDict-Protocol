@@ -78,7 +78,7 @@ Data1
 \0 // This empty book name means the ending Dict sequence.
 
 2.6 The LOOKUP Command
-Command: "lookup stardict_format_word"
+Command: "lookup stardict_format_word" or "lookup stardict_format_word wordcount"
 The stardict_format_word has these types: 1. Pattern match string, such as "a*p?le". 2. Fuzzy search string, it begin with '/' character, such as "/apple". 3. Full-text search string, it begin with '|' character, such as "|apple". 4. Normal lookup string, such as "apple pie". For the detail rules, see StarDict help.
 Responses: "CODE_OK", "CODE_DICTMASK_NOTSET".
 If the response is ""CODE_OK", the DictResult will be followed first, then the ListResult.
@@ -104,6 +104,8 @@ dict name 2\0
 word1\0
 \0
 \0 // The ending dict name sequence.
+
+When "ListResult" is "normal lookup word list", wordcount means how many word lists will return. The default value of wordcount is 30.
 
 2.7 The DEFINE Command
 Command "define word"
@@ -181,16 +183,20 @@ Responses: "CODE_OK", "CODE_DENIED".
 The collatefunc String will be followed if reponse is CODE_OK.
 
 2.20 The PREVIOUS Command
-Command: "previous apple"
+Command: "previous apple" or "previous apple wordcount"
 Responses: "CODE_OK", "CODE_DENIED".
 The previous word list Strings will be followed if reponse is CODE_OK.
 This String sequences are ended by a empty String.
 
+wordcount means how many word list Strings will return. The default value of wordcount is 15.
+
 2.21 The NEXT Command
-Command: "next apple"
+Command: "next apple" or "next apple wordcount"
 Responses: "CODE_OK", "CODE_DENIED".
 The next word list Strings will be followed if reponse is CODE_OK.
 This String sequences are ended by a empty String.
+
+wordcount means how many word list Strings will return. The default value of wordcount is 30.
 
 2.22 The SET_LANGUAGE Command
 Command: "setlanguage zh_CN"

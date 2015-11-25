@@ -95,6 +95,24 @@ static inline gint prefix_match (const gchar *s1, const gchar *s2)
     return ret;
 }
 
+/* check that string str has length allowed for index word 
+ * strlen(str) < MAX_INDEX_KEY_SIZE 
+ * This function does not read more than MAX_INDEX_KEY_SIZE or buf_size chars,
+ * which one is smaller.
+ * return value: 
+ * true - ok,
+ * false - string length exceeded. */
+static bool check_key_str_len(const gchar* str, size_t buf_size)
+{
+	size_t max = MAX_INDEX_KEY_SIZE;
+	if(buf_size < max)
+		max = buf_size;
+	for(size_t i = 0; i < max; ++i)
+		if(!str[i])
+			return true;
+	return false;
+}
+
 static inline bool bIsVowel(gchar inputchar)
 {
   gchar ch = g_ascii_toupper(inputchar);
@@ -209,12 +227,24 @@ void offset_index::page_t::fill(gchar *data, gint nent, glong idx_)
 
 inline const gchar *offset_index::read_first_on_page_key(glong page_idx)
 {
+	g_assert(gulong(page_idx+1) < npages);
 	fseek(idxfile, oft_file.wordoffset[page_idx], SEEK_SET);
 	guint32 page_size=oft_file.wordoffset[page_idx+1]-oft_file.wordoffset[page_idx];
 	gulong minsize = sizeof(wordentry_buf);
-	if (page_size < minsize)
+	if (page_size < minsize) {
 		minsize = page_size;
-	fread(wordentry_buf, minsize, 1, idxfile); //TODO: check returned values, deal with word entry that strlen>255.
+	}
+	size_t fread_size;
+	fread_size = fread(wordentry_buf, minsize, 1, idxfile);
+	if (fread_size != 1) {
+		g_print("fread error!\n");
+	}
+	if(!check_key_str_len(wordentry_buf, minsize)) {
+		wordentry_buf[minsize-1] = '\0';
+		g_critical("Index key length exceeds allowed limit. Key: %s, "
+			"max length = %i", wordentry_buf, MAX_INDEX_KEY_SIZE - 1);
+		return NULL;
+	}
 	return wordentry_buf;
 }
 
@@ -755,7 +785,12 @@ inline gulong offset_index::load_page(glong page_idx)
 	if (page_idx!=page.idx) {
 		page_data.resize(oft_file.wordoffset[page_idx+1]-oft_file.wordoffset[page_idx]);
 		fseek(idxfile, oft_file.wordoffset[page_idx], SEEK_SET);
-		fread(&page_data[0], 1, page_data.size(), idxfile);
+		size_t fread_size;
+		size_t page_data_size = page_data.size();
+		fread_size = fread(&page_data[0], 1, page_data_size, idxfile);
+		if (fread_size != page_data_size) {
+			g_print("fread error!\n");
+		}
 		page.fill(&page_data[0], nentr, page_idx);
 	}
 
@@ -1016,9 +1051,14 @@ inline const gchar *synonym_file::read_first_on_page_key(glong page_idx)
 	fseek(synfile, oft_file.wordoffset[page_idx], SEEK_SET);
 	guint32 page_size=oft_file.wordoffset[page_idx+1]-oft_file.wordoffset[page_idx];
 	gulong minsize = sizeof(wordentry_buf);
-        if (page_size < minsize)
+        if (page_size < minsize) {
                 minsize = page_size;
-	fread(wordentry_buf, minsize, 1, synfile); //TODO: check returned values, deal with word entry that strlen>255.
+	}
+	size_t fread_size;
+	fread_size = fread(wordentry_buf, minsize, 1, synfile); //TODO: check returned values, deal with word entry that strlen>255.
+	if (fread_size != 1) {
+		g_print("fread error!\n");
+	}
 	return wordentry_buf;
 }
 
@@ -1100,7 +1140,12 @@ inline gulong synonym_file::load_page(glong page_idx)
 	if (page_idx!=page.idx) {
 		page_data.resize(oft_file.wordoffset[page_idx+1]-oft_file.wordoffset[page_idx]);
 		fseek(synfile, oft_file.wordoffset[page_idx], SEEK_SET);
-		fread(&page_data[0], 1, page_data.size(), synfile);
+		size_t fread_size;
+		size_t page_data_size = page_data.size();
+		fread_size = fread(&page_data[0], 1, page_data_size, synfile);
+		if (fread_size != page_data_size) {
+			g_print("fread error!\n");
+		}
 		page.fill(&page_data[0], nentr, page_idx);
 	}
 

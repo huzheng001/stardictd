@@ -14,11 +14,18 @@ void undictzipfile(const char *filename)
 	gzfilename[len-2] = 'g';
 	char command[512];
 	sprintf(command, "mv %s %s", filename, gzfilename);
-	system(command);
+	int result;
+	result = system(command);
+	if (result == -1) {
+		g_print("system() error!\n");
+	}
 	sprintf(command, "gunzip %s", gzfilename);
 	if (system(command)!=0) {
 		sprintf(command, "mv %s %s", gzfilename, filename);
-		system(command);
+		result = system(command);
+		if (result == -1) {
+			g_print("system() error!\n");
+		}
 	}
 }
 

@@ -56,10 +56,15 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
 	if (!sametypesequence.empty()) {
 		gchar *origin_data = (gchar *)g_malloc(idxitem_size);
 
-		if (dictfile)
-			fread(origin_data, idxitem_size, 1, dictfile);
-		else
+		if (dictfile) {
+			size_t fread_size;
+			fread_size = fread(origin_data, idxitem_size, 1, dictfile);
+			if (fread_size != 1) {
+				g_print("fread error!\n");
+			}
+		} else {
 			dictdzfile->read(origin_data, idxitem_offset, idxitem_size);
+		}
 
 		guint32 data_size;
 		gint sametypesequence_len = sametypesequence.length();
@@ -173,10 +178,15 @@ gchar* DictBase::GetWordData(guint32 idxitem_offset, guint32 idxitem_size)
 		memcpy(data, &data_size, sizeof(guint32));
 	} else {
 		data = (gchar *)g_malloc(idxitem_size + sizeof(guint32));
-		if (dictfile)
-			fread(data+sizeof(guint32), idxitem_size, 1, dictfile);
-		else
+		if (dictfile) {
+			size_t fread_size;
+			fread_size = fread(data+sizeof(guint32), idxitem_size, 1, dictfile);
+			if (fread_size != 1) {
+				g_print("fread error!\n");
+			}
+		} else {
 			dictdzfile->read(data+sizeof(guint32), idxitem_offset, idxitem_size);
+		}
 		memcpy(data, &idxitem_size, sizeof(guint32));
 	}
 	g_free(cache[cache_cur].data);
@@ -197,10 +207,15 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 
 	if (dictfile)
 		fseek(dictfile, idxitem_offset, SEEK_SET);
-	if (dictfile)
-		fread(origin_data, idxitem_size, 1, dictfile);
-	else
+	if (dictfile) {
+		size_t fread_size;
+		fread_size = fread(origin_data, idxitem_size, 1, dictfile);
+		if (fread_size != 1) {
+			g_print("fread error!\n");
+		}
+	} else {
 		dictdzfile->read(origin_data, idxitem_offset, idxitem_size);
+	}
 	gchar *p = origin_data;
 	guint32 sec_size;
 	int j;

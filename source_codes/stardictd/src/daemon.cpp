@@ -910,10 +910,17 @@ static int _handleconn (int delay_time, int max_cost_time, int error)
 		} else if ((*args)[0] == "auth" && args->size()>=3) {
 			daemon_auth((*args)[1], (*args)[2]);
 		} else if ((*args)[0] == "lookup" && args->size()>=2) {
-			if (args->size() >=3)
-				daemon_lookup((*args)[1], atoi((*args)[2].c_str()));
-			else
-				daemon_lookup((*args)[1], 20);
+			if (args->size() >=3) {
+				int wordcount = atoi((*args)[2].c_str());
+				if (wordcount < 1) {
+					wordcount = 1;
+				} else if (wordcount > 100) {
+					wordcount = 100;
+				}
+				daemon_lookup((*args)[1], wordcount);
+			} else {
+				daemon_lookup((*args)[1], 30);
+			}
 		} else if ((*args)[0] == "query" && args->size()>=2) {
 			daemon_query((*args)[1]);
 		} else if ((*args)[0] == "selectquery" && args->size()>=2) {
@@ -923,15 +930,29 @@ static int _handleconn (int delay_time, int max_cost_time, int error)
 		} else if ((*args)[0] == "define" && args->size()>=2) {
 			daemon_define((*args)[1]);
 		} else if ((*args)[0] == "previous" && args->size()>=2) {
-			if (args->size() >=3)
-				daemon_previous((*args)[1], atoi((*args)[2].c_str()));
-			else
-				daemon_previous((*args)[1], 8);
+			if (args->size() >=3) {
+				int wordcount = atoi((*args)[2].c_str());
+				if (wordcount < 1) {
+					wordcount = 1;
+				} else if (wordcount > 50) {
+					wordcount = 50;
+				}
+				daemon_previous((*args)[1], wordcount);
+			} else {
+				daemon_previous((*args)[1], 15);
+			}
 		} else if ((*args)[0] == "next" && args->size()>=2) {
-			if (args->size() >=3)
-				daemon_next((*args)[1], atoi((*args)[2].c_str()));
-			else
-				daemon_next((*args)[1], 15);
+			if (args->size() >=3) {
+				int wordcount = atoi((*args)[2].c_str());
+				if (wordcount < 1) {
+					wordcount = 1;
+				} else if (wordcount > 100) {
+					wordcount = 100;
+				}
+				daemon_next((*args)[1], wordcount);
+			} else {
+				daemon_next((*args)[1], 30);
+			}
 		} else if ((*args)[0] == "quit" && args->size()>=1) {
 			daemon_quit();
 		} else if ((*args)[0] == "register" && args->size()>=4) {

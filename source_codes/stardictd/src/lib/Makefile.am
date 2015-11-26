@@ -1,3 +1,6 @@
+
+EXTRA_DIST = kmp.cpp kmp.h
+
 noinst_LIBRARIES = libstardict.a
 
 libstardict_a_SOURCES = \
@@ -5,7 +8,6 @@ libstardict_a_SOURCES = \
 	dictziplib.cpp dictziplib.hpp	\
 	distance.cpp distance.h	\
 	mapfile.hpp file.hpp	\
-	kmp.cpp kmp.h	\
 	my_global.h m_ctype.h m_string.h \
 	ctype-mb.cpp ctype-utf8.cpp ctype-uca.cpp	\
 	collation.cpp collation.h \

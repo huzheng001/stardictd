@@ -25,7 +25,7 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "kmp.h"
+//#include "kmp.h"
 
 #include "data.hpp"
 #include "getuint32.h"
@@ -232,17 +232,18 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 			case 'k':
 			case 'w':
 			case 'h':
+				sec_size = strlen(p);
 				for (j=0; j<nWord; j++)
-					// KMP() is faster than strstr() in theory. Really? Always be true?
-					//if (!WordFind[j] && strstr(p, SearchWords[j].c_str())) {
-					if (!WordFind[j] && KMP(p, strlen(p), SearchWords[j].c_str())!=-1) {
+					// KMP() is slower than strstr() if have no prepare data.
+					//if (!WordFind[j] && KMP(p, sec_size, SearchWords[j].c_str())!=-1) {
+					if (!WordFind[j] && g_strstr_len(p, sec_size, SearchWords[j].c_str())!=NULL) {
 						WordFind[j] = true;
 						++nfound;
 					}
 
 				if (nfound==nWord)
 					return true;
-				sec_size = strlen(p)+1;
+				sec_size += sizeof(gchar);
 				p+=sec_size;
 				break;
 			default:
@@ -267,8 +268,8 @@ bool DictBase::SearchData(std::vector<std::string> &SearchWords, guint32 idxitem
 		case 'h':
 			sec_size = idxitem_size - (p-origin_data);
 			for (j=0; j<nWord; j++)
-				//if (!WordFind[j] && g_strstr_len(p, sec_size, SearchWords[j].c_str())) {
-				if (!WordFind[j] && KMP(p, sec_size, SearchWords[j].c_str())!=-1) {
+				//if (!WordFind[j] && KMP(p, sec_size, SearchWords[j].c_str())!=-1) {
+				if (!WordFind[j] && g_strstr_len(p, sec_size, SearchWords[j].c_str())!=NULL) {
 					WordFind[j] = true;
 					++nfound;
 				}

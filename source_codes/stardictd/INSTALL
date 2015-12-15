@@ -2,9 +2,9 @@
 ==============================
 a) Create stardictd account.
 shell> adduser stardictd
-b) Upload stardictd-0.4.tar.xz to /home/stardictd/
-shell> tar -xJvf stardictd-0.4.tar.xz
-shell> cd stardictd-0.4
+b) Upload stardictd-0.5.tar.xz to /home/stardictd/
+shell> tar -xJvf stardictd-0.5.tar.xz
+shell> cd stardictd-0.5
 shell> ./configure
 shell> make
 shell> strip src/stardictd
@@ -24,13 +24,13 @@ mysql> GRANT ALL ON stardict.* TO stardict@localhost IDENTIFIED BY 'stardict';
 mysql> quit
 
 b) Create tables:
-shell> mysql -ustardict -Dstardict -p < /home/stardictd/stardictd-0.4/etc/stardict.sql
+shell> mysql -ustardict -Dstardict -p < /home/stardictd/stardictd-0.5/etc/stardict.sql
 password: stardict
 
 c) Edit /home/stardictd/stardictd.conf
 =============================
 Copy default configure file:
-shell> cp stardictd-0.4/etc/stardictd.conf ~/
+shell> cp stardictd-0.5/etc/stardictd.conf ~/
 Then edit this file to suit your needs.
 
 Notice: you sould "chmod 0600 stardictd.conf" to make this file is not readable by other users, as them contains the database user password.
@@ -43,7 +43,7 @@ Note: you can edit [info]/ad_info to your own website link.
 
 3) Prepare dictionary files.
 Extract the dictionary files into "/usr/share/stardict/dic".
-Then run "/home/stardictd/stardictd-0.4/src/tools/genxmlfiles" as root to generate dictionary configure files.
+Then run "/home/stardictd/stardictd-0.5/src/tools/genxmlfiles" as root to generate dictionary configure files.
 
 You can edit them manually too.
 Edit "/usr/share/stardict/dic/stardictd.xml", its content can be:
@@ -85,12 +85,12 @@ If you installed too many dictionaries, as stardictd will mmap all the .dict.dz 
 
 4) Run stardictd:
 ==============================
-shell> cd stardictd-0.4/src
+shell> cd stardictd-0.5/src
 shell> ./stardictd -d
 It is better not to run stardictd as root.
 
 You can add the next line into /etc/rc.local
-sudo -u stardictd /home/stardictd/stardictd-0.4/src/stardictd -d
+sudo -u stardictd /home/stardictd/stardictd-0.5/src/stardictd -d
 
 To stop the stardictd service, type:
 shell> killall stardictd

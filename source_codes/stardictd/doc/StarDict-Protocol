@@ -1,8 +1,12 @@
-StarDict-Protocol 0.3
+StarDict-Protocol 0.4
 
 1. Protocol Overview
 
 The StarDict Server Protocol is a TCP transaction based query/response protocol that allows a client to access dictionary definitions from a set of natural language dictionary databases. It is inspired by DICT protocol, see rfc2229.
+
+The protocol 0.3 version works with StarDict-3.0.x, as stardictd-0.4.
+The protocol 0.4 version works with StarDict-4.0.x, as stardictd-0.5 and above.
+
 
 1.1 Request
 Request are composed by some commands. Each command is ended by a '\n' character, and has the max length as 10K bytes, including the ending '\n'.
@@ -23,6 +27,7 @@ Here are some general status codes:
 #define CODE_SYNTAX_ERROR            500
 #define CODE_DENIED                  521
 #define CODE_DICTMASK_NOTSET         522
+#define CODE_USER_NOT_REGISTER       523
 
 The real content is decided by the corresponding command. It may be ommited if the status string indicates this.
 
@@ -45,7 +50,15 @@ Responses: "CODE_GOODBYE".
 2.4 The AUTH Command
 The client can authenticate itself to the server using a username and password. The authenticated user can query custom dictionaries and has the own preferences. 
 Command: "auth username auth-string"
-The auth-string is the MD5 checksum of the concatenation of the msg-id (obtained from the initial banner) and the user password's MD5 checksum.
+The auth-string is the MD5 checksum of the concatenation of the msg-id (obtained from the initial banner) and the user password's MD5 salt checksum.
+=====
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
+// Get md5saltpasswd !
+
+MD5Update(&ctx, (const unsigned char*)cmd_reply.daemonStamp.c_str(), cmd_reply.daemonStamp.length()); // msg-id
+MD5Update(&ctx, (const unsigned char*)(c->auth->md5saltpasswd.c_str()), c->auth->md5saltpasswd.length()); // The user password's MD5 salt checksum.
+=====
 Responses: "CODE_OK", "CODE_DENIED auth denied".
 
 2.5 The QUERY Command
@@ -57,9 +70,9 @@ Here is the format of DictResult:
 First, a String(Terminated by '\0'), which means the original query word.
 Then, the Dict Sequences, each Dict sequence begin with a String which means the dict name, empty dict name means the ending Dict sequence.
 The Word Sequences are followed by the dict name, the first is the word String, empty word means the ending Word sequence.
-The Data Sequences are followd by the word, Data sequence begin with a 32-bit number in network order, this number means the followed Data's length, 0 means the ending Data Sequence. The Data begin with a sametypesequence character, then the content, and so on. For sametypesequence, you can read DICTFILE_FORMAT which can be found at http://stardict.sourceforge.net/DICTFILE_FORMAT.
+The Data Sequences are followd by the word, Data sequence begin with a 32-bit number in network order, this number means the followed Data's length, 0 means the ending Data Sequence. The Data begin with a sametypesequence character, then the content, and so on. For sametypesequence, you can read "StarDictFileFormat" which can be found at http://stardict-4.sourceforge.net/StarDictFileFormat.
 
-Here is a example of DictResult:
+Here is an example of DictResult:
 apples\0 // The original query word.
 book name 1\0 // The dictionary name.
 word1\0 // The first word.
@@ -88,7 +101,7 @@ First, a String, which means the list type, it can be "l", "r", "f", and "d". "l
 If the list type is "l", "r" or "f", the word sequences will be followed, which end by a empty String.
 If the list type is "d", the dict name sequences is followed, then the word sequences, the dict name sequences is ended by a empty String too.
 
-Here is a example of List Result:
+Here is an example of List Result:
 l\0 // normal lookup word list.
 apple\0
 apple pie\0
@@ -121,8 +134,12 @@ If the response is ""CODE_OK", the DictResult will be followed.
 The difference between QUERY and SELECTQUERY is that SELECTQUERY will try to analyze the selected_word, while QUERY will search it directly. So SELECTQUERY is suitable to search the user selected words, while QUERY is suitable to search the user inputed words.
 
 2.9 The REGISTER Command
-Command: "register username password-md5sum email".
-You needn't send the password to the server, but only password's MD5 checksum, so even the server won't know your original password.
+Command: "register username password-md5saltsum email".
+You needn't send the password to the server, but only password's MD5 salt checksum, so even the server won't know your original password.
+=====
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
+=====
 Responses: "CODE_OK", "CODE_DENIED deny reason".
 
 2.10 The CHANGE_PASSWD Command
@@ -136,21 +153,21 @@ Responses: "CODE_OK", "CODE_DENIED".
 
 2.12 The GET_DICT_MASK Command
 Command: "getdictmask"
-Responses: "CODE_OK", "CODE_DENIED".
+Responses: "CODE_OK", "CODE_USER_NOT_REGISTER", "CODE_DENIED".
 The dictmask String will be followed if reponse is CODE_OK, it is in XML format.
-Here is a example:
+Here is an example:
 <dict><uid>dict1</uid><bookname>dict name</bookname><wordcount>1</wordcount></dict>
 
 2.13 The MAX_DICT_COUNT Command
 Command: "maxdictcount"
-Responses: "CODE_OK", "CODE_DENIED".
+Responses: "CODE_OK", "CODE_USER_NOT_REGISTER".
 The maxdictcount String will be followed if reponse is CODE_OK.
 
 2.14 The DIR_INFO Command
 Command: "dirinfo /zh_CN/"
 Responses: "CODE_OK", "CODE_DENIED".
 The dirinfo String will be followed if reponse is CODE_OK, it is in XML format.
-Here is a example:
+Here is an example:
 <userlevel>0</userlevel>
 <parent>/</parent>
 <dir><name>Chinese</name><dirname>zh_CN</dirname><dictcount>1</dictcount></dir>
@@ -160,7 +177,7 @@ Here is a example:
 Command: "dictinfo dict1"
 Responses: "CODE_OK", "CODE_DENIED".
 The dictinfo String will be followed if reponse is CODE_OK, it is in XML format.
-Here is a example:
+Here is an example:
 <dictinfo><bookname>dict 1</bookname><wordcount>1</wordcount><synwordcount>1</synwordcount><author>someone</author><email>a@b.com</email><website>http://b.com</website><description>created by someone</description><data>2006.9.17</date><download>http://www.stardict.org/downloadit.php?file=a.tar.bz2</download></dictinfo>
 
 2.16 The USER_LEVEL Command
@@ -221,8 +238,8 @@ Command: "fromto"
 Responses: "CODE_OK", "CODE_DENIED".
 The fromto XML String will be followed if reponse is CODE_OK.
 
-2.27 The COOKIE Command
-Command: "cookie dict1\ dict2"
+2.27 The TMP_DICTMASK Command
+Command: "tmpdictmask dict1\ dict2"
 Responses: "CODE_OK", "CODE_DENIED".
 Set the dictmask temporarally.
 
@@ -233,14 +250,18 @@ The dictmask XML String will be followed if reponse is CODE_OK.
 
 2.29 The GET_ADINFO Command
 Command: "getadinfo"
-Responses: "CODE_OK", "CODE_DENIED".
-The adinfo XML String will be followed if reponse is CODE_OK.
-
+Responses: "CODE_OK".
+The adinfo XML String will be returned.
+Here is an example:
+<title>Upgrade Now!</title><url>http://www.stardict.org/finance.php</url>
 
 
 3. More information
 
 StarDict website:
+
+http://stardictd.sourceforge.net
+http://stardict-4.sourceforge.net
 http://code.google.com/p/stardictd/
 http://code.google.com/p/stardict-3/
 http://www.stardict.org
@@ -252,4 +273,4 @@ If you have any questions, email me. :)
 
 Hu Zheng <huzheng001@gmail.com>
 http://www.huzheng.org
-2007.12.10
+2015.12.15

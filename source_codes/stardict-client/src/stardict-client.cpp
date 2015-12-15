@@ -58,7 +58,7 @@ bool connect_server(const char *host, const char *port)
 int main( int argc, char **argv )
 {
 	setlocale (LC_ALL,"");
-	append_command(false, make_command( CMD_CLIENT, "0.3", "stardict-client" ) );
+	append_command(false, make_command( CMD_CLIENT, "0.4", "stardict-client" ) );
 
 	const char *host = "127.0.0.1";
 	const char *port = "2628";
@@ -81,7 +81,7 @@ int main( int argc, char **argv )
 			i+=2;
 			break;
 		case 'b':
-			append_command(append_sep, make_command(CMD_COOKIE, argv[i+1]));
+			append_command(append_sep, make_command(CMD_TMP_DICTMASK, argv[i+1]));
 			i++;
 			break;
 		case 'c':

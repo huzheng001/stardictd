@@ -8,8 +8,8 @@ if ($username=="" || $password=="" || $password2=="" || $password!=$password2 ||
 } else {
 	include_once 'arg.php';
 	$eusername = encode_command_arg($username);
-	$md5password = md5($password);
-	$epassword = encode_command_arg($md5password);
+	$md5saltpassword = md5("StarDict".$password);
+	$epassword = encode_command_arg($md5saltpassword);
 	$eemail = encode_command_arg($email);
 	$args = "-rr ".$eusername." ".$epassword." ".$eemail;
 	include_once 'backend.php';

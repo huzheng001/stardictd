@@ -77,6 +77,7 @@ static void daemon_auth(std::string &user, std::string &key)
 			return;
 		}
 		MD5Init(&ctx);
+		MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 		MD5Update(&ctx, (const unsigned char*)root_password.c_str(), root_password.length());
 		MD5Final(digest, &ctx);
 		for (int i = 0; i < 16; i++)
@@ -89,7 +90,7 @@ static void daemon_auth(std::string &user, std::string &key)
 			return;
 		}
 		std::string sql;
-		sql = "SELECT user_id, user_password, level FROM stardict_users WHERE username=";
+		sql = "SELECT user_id, user_md5saltpassword, level FROM stardict_users WHERE username=";
 		AppendMysql(sql, user.c_str());
 		if (stardictdMain.conn.query(sql.c_str(), sql.length())) {
 			daemon_printf( "%d Query failed!\n", CODE_DENIED );
@@ -112,6 +113,7 @@ static void daemon_auth(std::string &user, std::string &key)
 		res->destroy();
 	}
 	MD5Init(&ctx);
+	MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 	MD5Update(&ctx, (const unsigned char*)buf, strlen(buf));
 	MD5Final(digest, &ctx);
 	for (int i = 0; i < 16; i++)
@@ -178,7 +180,7 @@ static void daemon_change_password(std::string &user, std::string &old_passwd, s
 	}
 	std::string sql;
 	if (auth_user != "root") {
-		sql = "SELECT user_password FROM stardict_users WHERE username=";
+		sql = "SELECT user_md5saltpassword FROM stardict_users WHERE username=";
 		AppendMysql(sql, user.c_str());
 		if (stardictdMain.conn.query(sql.c_str(), sql.length())) {
 			daemon_printf( "%d Query failed!\n", CODE_DENIED );
@@ -197,6 +199,7 @@ static void daemon_change_password(std::string &user, std::string &old_passwd, s
 		}
 		struct MD5Context ctx;
 		MD5Init(&ctx);
+		MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 		MD5Update(&ctx, (const unsigned char*)old_passwd.c_str(), old_passwd.length());
 		unsigned char digest[16];
 		MD5Final(digest, &ctx);
@@ -211,7 +214,7 @@ static void daemon_change_password(std::string &user, std::string &old_passwd, s
 		}
 		res->destroy();
 	}
-	sql = "UPDATE stardict_users SET user_password=";
+	sql = "UPDATE stardict_users SET user_md5saltpassword=";
 	AppendMysql(sql, new_passwd.c_str());
 	sql += " WHERE username=";
 	AppendMysql(sql, user.c_str());
@@ -234,7 +237,7 @@ static void daemon_register(std::string &user, std::string &password, std::strin
 	}
 	std::string sql;
 	// Original insert sql code.
-	sql = "INSERT INTO stardict_users (username, user_password) VALUES(";
+	sql = "INSERT INTO stardict_users (username, user_md5saltpassword) VALUES(";
 	AppendMysql(sql, user.c_str());
 	sql += ",";
 	AppendMysql(sql, password.c_str());
@@ -260,6 +263,9 @@ static void daemon_register(std::string &user, std::string &password, std::strin
 		stardictdMain.logger->log(LOG_ERROR, text.c_str());
 	}
 	// Code to cooperate with phpBB3 forum.
+	// It works in PROTOCOL_VERSION_0.3 ago, but don't works in PROTOCOL_VERSION_0.4 now. As change "user_password" to "user_md5saltpassword".
+	//
+	//
 	/*gchar *register_time = g_strdup_printf("%u", (unsigned int)time(NULL));
 	sql = "INSERT INTO `stardict_users`(`user_type`, `group_id`, `user_permissions`, `user_perm_from`, `user_ip`, `user_regdate`, `username`, `username_clean`, `user_password`, `user_passchg`, `user_pass_convert`, `user_email`, `user_email_hash`, `user_birthday`, `user_lastvisit`, `user_lastmark`, `user_lastpost_time`) VALUES(";
 	sql += "0 ,2, '', 0, ''";
@@ -445,7 +451,7 @@ static void daemon_setemail(std::string &email)
 static void daemon_getdictmask()
 {
 	if (userID.empty()) {
-		daemon_printf( "%d unknow user id\n", CODE_DENIED );
+		daemon_printf( "%d unknow user id\n", CODE_USER_NOT_REGISTER );
 		return;
 	}
 	if (init_database()) {
@@ -595,7 +601,7 @@ static void daemon_getuserlevel()
 static void daemon_maxdictcount()
 {
 	if (userID.empty()) {
-		daemon_printf( "%d unknow user id\n", CODE_DENIED );
+		daemon_printf( "%d unknow user id\n", CODE_USER_NOT_REGISTER );
 		return;
 	}
 	daemon_printf( "%d\n", CODE_OK );
@@ -719,12 +725,12 @@ static void daemon_getadinfo()
 	net_write_str(ad_info);
 }
 
-static void daemon_LookupinCookie(std::string &cookieDicts)
+static void daemon_LookupinTmpdictmask(std::string &Tmpdictmask)
 {
 	daemon_printf( "%d\n", CODE_OK );
 	auth_user = "guest";
 	const int max_dict_count = stardictdMain.conf->get_int("level-0-user/max_dict_count");
-	stardictdMain.SetDictMask(cookieDicts.c_str(), max_dict_count, 0);
+	stardictdMain.SetDictMask(Tmpdictmask.c_str(), max_dict_count, 0);
 	stardictdMain.SetServerCollateFunc(0);
 }
 
@@ -814,7 +820,7 @@ static void daemon_next(std::string &word, int wordcount)
 
 static void daemon_client(std::string &protocol_name, std::string &client_name)
 {
-	if (protocol_name == "0.3") {
+	if (protocol_name == "0.4") {
 		daemon_ok( CODE_OK, "ok");
 	} else {
 		daemon_ok(CODE_DENIED, "You need to update the client.");
@@ -834,7 +840,7 @@ static void daemon_banner()
 	daemon_printf( "%d %s %s <auth> %s\n",
 			CODE_HELLO,
 			hostname,
-			"stardictd-0.3",
+			"stardictd-0.5",
 			daemonStamp);
 	g_free(hostname);
 }
@@ -989,8 +995,8 @@ static int _handleconn (int delay_time, int max_cost_time, int error)
 			daemon_fromto();
 		} else if ((*args)[0] == "dictslist" && args->size()>=2) {
 			daemon_dictslist((*args)[1]);
-		} else if ((*args)[0] == "cookie" && args->size() >= 2) {
-			daemon_LookupinCookie((*args)[1]);
+		} else if ((*args)[0] == "tmpdictmask" && args->size() >= 2) {
+			daemon_LookupinTmpdictmask((*args)[1]);
 		} else if ((*args)[0] == "getadinfo" && args->size()>=1) {
 			daemon_getadinfo();
 		} else {

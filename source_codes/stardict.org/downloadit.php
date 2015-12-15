@@ -16,13 +16,13 @@ if ($level == 0) {
 	header("Location: download/".$tmpdir."/".$file);
 } else {
 	$cookie_username = isset($_COOKIE["StarDict_username"])?$_COOKIE["StarDict_username"]:"";
-	$cookie_md5password = isset($_COOKIE["StarDict_password"])?$_COOKIE["StarDict_password"]:"";
-	if ($cookie_username == "" || $cookie_md5password == "") {
+	$cookie_md5saltpassword = isset($_COOKIE["StarDict_password"])?$_COOKIE["StarDict_password"]:"";
+	if ($cookie_username == "" || $cookie_md5saltpassword == "") {
 		echo "<center>Only Level ".$level." user can download this file.<br>Please <a href=\"login.php\">Sign in</a> first!</center>";
 	} else {
 		include_once 'arg.php';
 		$eusername = encode_command_arg($cookie_username);
-		$epassword = encode_command_arg($cookie_md5password);
+		$epassword = encode_command_arg($cookie_md5saltpassword);
 		$args = "-ar ".$eusername." ".$epassword." -gu";
 		include_once 'backend.php';
 		$content = call_stardict_client($args);

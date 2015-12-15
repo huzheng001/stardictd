@@ -64,6 +64,7 @@ struct cmd *make_command( int command, ... )
 		if (need_md5) {
 			struct MD5Context ctx;
 			MD5Init(&ctx);
+			MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 			MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
 			unsigned char digest[16];
 			MD5Final(digest, &ctx);
@@ -91,6 +92,7 @@ struct cmd *make_command( int command, ... )
 		if (need_md5) {
 			struct MD5Context ctx;
 			MD5Init(&ctx);
+			MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 			MD5Update(&ctx, (const unsigned char*)new_passwd, strlen(new_passwd));
 			unsigned char digest[16];
 			MD5Final(digest, &ctx);
@@ -101,10 +103,11 @@ struct cmd *make_command( int command, ... )
 		std::string earg1, earg2, earg3;
 		arg_escape(earg1, user);
 		arg_escape(earg2, old_passwd);
-		if (need_md5)
+		if (need_md5) {
 			arg_escape(earg3, hex);
-		else
+		} else {
 			arg_escape(earg3, new_passwd);
+		}
 		c->data = g_strdup_printf("change_password %s %s %s\n", earg1.c_str(), earg2.c_str(), earg3.c_str());
 		break;
 	}
@@ -237,11 +240,11 @@ struct cmd *make_command( int command, ... )
 		c->data = g_strdup("fromto\n");
 		break;
 	}
-	case CMD_COOKIE:
+	case CMD_TMP_DICTMASK:
 	{
 		std::string earg;
 		arg_escape(earg, va_arg(ap, const char *));
-		c->data = g_strdup_printf("cookie %s\n", earg.c_str());
+		c->data = g_strdup_printf("tmpdictmask %s\n", earg.c_str());
 		break;
 	}
 	case CMD_QUIT:
@@ -288,6 +291,7 @@ bool request_command(struct cmd *c)
 			int i;
 			if (c->auth.need_md5) {
 				MD5Init(&ctx);
+				MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 				MD5Update(&ctx, (const unsigned char*)c->auth.passwd, strlen(c->auth.passwd));
 				MD5Final(digest, &ctx );
 				for (i = 0; i < 16; i++)
@@ -296,10 +300,11 @@ bool request_command(struct cmd *c)
 			}
 			MD5Init(&ctx);
 			MD5Update(&ctx, (const unsigned char*)cmd_reply.daemonStamp.c_str(), cmd_reply.daemonStamp.length());
-			if (c->auth.need_md5)
+			if (c->auth.need_md5) {
 				MD5Update(&ctx, (const unsigned char*)hex, 32);
-			else
+			} else {
 				MD5Update(&ctx, (const unsigned char*)(c->auth.passwd), strlen(c->auth.passwd));
+			}
 			MD5Final(digest, &ctx );
 			for (i = 0; i < 16; i++)
 				sprintf( hex+2*i, "%02x", digest[i] );
@@ -404,7 +409,7 @@ static bool process_command_auth()
 	return false;
 }
 
-static bool process_command_cookie()
+static bool process_command_tmpdictmask()
 {
 	std::string buf;
 	if (net_read_line(buf))
@@ -412,7 +417,7 @@ static bool process_command_cookie()
 	int status;
 	status = atoi(buf.c_str());
 	if (status != CODE_OK) {
-		printf("Cookie denied: %s\n", buf.c_str());
+		printf("Tmpdictmask denied: %s\n", buf.c_str());
 		return true;
 	}
 	return false;
@@ -1260,8 +1265,8 @@ void process_command()
 			if (process_command_register())
 				return;
 			break;
-		case CMD_COOKIE:
-			if(process_command_cookie())
+		case CMD_TMP_DICTMASK:
+			if(process_command_tmpdictmask())
 				return;
 			break;
 		case CMD_CHANGE_PASSWD:

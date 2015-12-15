@@ -1,7 +1,7 @@
 CREATE TABLE stardict_users (
 	user_id INT UNSIGNED AUTO_INCREMENT,
 	username CHAR(16) NOT NULL,
-	user_password CHAR(32) BINARY NOT NULL,
+	user_md5saltpassword CHAR(32) BINARY NOT NULL,
 	level TINYINT UNSIGNED NOT NULL,
 	lasttime INT UNSIGNED NOT NULL,
 

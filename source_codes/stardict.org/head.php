@@ -8,10 +8,10 @@ if ($username!="" && $password!="") {
 	echo "<b>".$username."</b>";
 } else {
 	$cookie_username = isset($_COOKIE["StarDict_username"])?$_COOKIE["StarDict_username"]:"";
-	$cookie_md5password = isset($_COOKIE["StarDict_password"])?$_COOKIE["StarDict_password"]:"";
-	if ($cookie_username!="" && $cookie_md5password!="") {
+	$cookie_md5saltpassword = isset($_COOKIE["StarDict_password"])?$_COOKIE["StarDict_password"]:"";
+	if ($cookie_username!="" && $cookie_md5saltpassword!="") {
 		$_SESSION['username'] = $cookie_username;
-		$_SESSION['password'] = $cookie_md5password;
+		$_SESSION['password'] = $cookie_md5saltpassword;
 		$logged_in = TRUE;
 		echo "<b>".$cookie_username."</b>";
 	} else {

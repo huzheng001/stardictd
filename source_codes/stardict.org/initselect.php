@@ -238,7 +238,7 @@ function _dictShow(word){
     }
     
     var u= _dict_host+'mini.php?';
-    if (_dict_username && _dict_md5passwd) u += 'user='+encodeURIComponent(_dict_username)+'&' + 'passwd='+encodeURIComponent(_dict_md5passwd)+'&';
+    if (_dict_username && _dict_md5saltpasswd) u += 'user='+encodeURIComponent(_dict_username)+'&' + 'passwd='+encodeURIComponent(_dict_md5saltpasswd)+'&';
     u += 'q='+encodeURIComponent(word);
     setTimeout(function(){_dict_iframe.src=u;},200);
     _dict_old_word = word;
@@ -323,12 +323,12 @@ if ($username!="" && $password!="") {
 	echo "var _dict_username = '";
 	echo $username;
 	echo "';\n";
-	echo "var _dict_md5passwd = '";
+	echo "var _dict_md5saltpasswd = '";
 	echo $password;
 	echo "';\n";
 } else {
 	echo "var _dict_username = '';\n";
-	echo "var _dict_md5passwd = '';\n";
+	echo "var _dict_md5saltpasswd = '';\n";
 }
 ?>
 var _dict_old_word = "";

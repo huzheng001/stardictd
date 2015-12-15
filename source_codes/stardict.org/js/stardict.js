@@ -2,7 +2,7 @@ var dict_is_ie = true;
 var dict_host = 'http://www.stardict.org/';
 var dict_help = 'http://www.stardict.org/selectandtrans.php';
 var dict_username = '';
-var dict_md5passwd = '';
+var dict_md5saltpasswd = '';
 var dict_partner = '';
 var dict_enable = true;
 var dict_old_word = "";
@@ -213,7 +213,7 @@ function dictShow(word){
     }
     var u=dict_host+'mini.php?';
     if(dict_partner) u += 'id='+dict_partner+'&';
-    if (dict_username && dict_md5passwd) u += 'user='+encodeURIComponent(dict_username)+'&' + 'passwd='+encodeURIComponent(dict_md5passwd)+'&';
+    if (dict_username && dict_md5saltpasswd) u += 'user='+encodeURIComponent(dict_username)+'&' + 'passwd='+encodeURIComponent(dict_md5saltpasswd)+'&';
     u += 'q='+encodeURIComponent(word);
     setTimeout(function(){dict_iframe.src=u;},250);
     dict_old_word = word;

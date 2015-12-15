@@ -12,5 +12,6 @@
 
 #define CODE_DENIED                  521
 #define CODE_DICTMASK_NOTSET         522
+#define CODE_USER_NOT_REGISTER       523
 
 #endif

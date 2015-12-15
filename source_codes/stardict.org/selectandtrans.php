@@ -28,7 +28,7 @@ Put these codes in your website:<br><i>
 &lt;script type=&quot;text/javascript&quot;&gt;<br>
 dictInit();<br>
 &lt;/script&gt;</i><hr>
-You can add &quot;dict_username&quot; and &quot;dict_md5passwd&quot; into this script, so you can use custom dictionaries.<br>
+You can add &quot;dict_username&quot; and &quot;dict_md5saltpasswd&quot; into this script, so you can use custom dictionaries.<br>
 <form action="genselectjs.php" method="post"><table><tr><td>Username:</td><td><input type="text" name="username" size="20" maxlength="16" /></td></tr><tr><td>Password:</td><td><input type="password" name="password" size="20" maxlength="32" /></td></tr><tr><td colspan="2"><input type="submit" value="Generate JavaScript code" /></td></tr></table></form>
 </td></tr>
 <tr><td><b>Enable translate opinion:</b><br>

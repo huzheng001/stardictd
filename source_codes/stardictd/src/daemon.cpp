@@ -113,7 +113,6 @@ static void daemon_auth(std::string &user, std::string &key)
 		res->destroy();
 	}
 	MD5Init(&ctx);
-	MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 	MD5Update(&ctx, (const unsigned char*)buf, strlen(buf));
 	MD5Final(digest, &ctx);
 	for (int i = 0; i < 16; i++)
@@ -820,10 +819,16 @@ static void daemon_next(std::string &word, int wordcount)
 
 static void daemon_client(std::string &protocol_name, std::string &client_name)
 {
-	if (protocol_name == "0.4") {
-		daemon_ok( CODE_OK, "ok");
+	double version;
+	version = atof(protocol_name.c_str());
+	if (version == 0.4) {
+		daemon_ok( CODE_OK, "OK");
 	} else {
-		daemon_ok(CODE_DENIED, "You need to update the client.");
+		if (version > 0.4) {
+			daemon_ok(CODE_DENIED, "The protocol version is not the same! You need to change to the newest stardictd server!");
+		} else {
+			daemon_ok(CODE_DENIED, "The protocol version is not the same! You need to update the client!");
+		}
 	}
 }
 

@@ -24,8 +24,10 @@ mysql> GRANT ALL ON stardict.* TO stardict@localhost IDENTIFIED BY 'stardict';
 mysql> quit
 
 b) Create tables:
-shell> mysql -ustardict -Dstardict -p < /home/stardictd/stardictd-0.5/etc/stardict.sql
+shell> mysql -ustardict -Dstardict -p
 password: stardict
+
+mysql> source /home/stardictd/stardictd-0.5/etc/stardict.sql
 
 c) Edit /home/stardictd/stardictd.conf
 =============================
@@ -33,10 +35,9 @@ Copy default configure file:
 shell> cp stardictd-0.5/etc/stardictd.conf ~/
 Then edit this file to suit your needs.
 
-Notice: you sould "chmod 0600 stardictd.conf" to make this file is not readable by other users, as them contains the database user password.
+Notice: you sould "chmod 0600 stardictd.conf" to make this file is not readable by other users, as it contains the database user password and root-user password.
 
-Note: if you changed the database user password, you need to modify
-"stardictd.conf" too.
+Note: if you changed the database user password, you need to modify the "stardictd.conf" file too.
 
 Note: you can edit [info]/ad_info to your own website link.
 
@@ -58,6 +59,7 @@ So stardictd will read "zh_CN/stardictd.xml" then, this file's content can be:
 <uid>landao-ec-gb</uid>
 <from>English</from>
 <to>Chinese (Simplified)</to>
+<download>http://download.huzheng.org/zh_CN/stardict-langdao-ec-gb-2.4.2.tar.bz2</download>
 </dict>
 <dict>
 <path>stardict-langdao-ce-gb-2.4.2/langdao-ce-gb.ifo</path>
@@ -65,7 +67,7 @@ So stardictd will read "zh_CN/stardictd.xml" then, this file's content can be:
 <from>Chinese (Simplified)</from>
 <to>English</to>
 <level>1</level>
-<download>http://www.stardict.org/downloadit.php?file=a.tar.bz2</download>
+<download>http://download.huzheng.org/zh_CN/stardict-langdao-ce-gb-2.4.2.tar.bz2</download>
 </dict>
 <linkdict>
 <uid>langdao-ce-gb</uid>

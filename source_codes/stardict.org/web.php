@@ -26,7 +26,7 @@ include 'head.php';
 <?php
 	echo "<table border=\"0\" cellpadding=\"4\" cellspacing=\"0\"><tbody><tr><td nowrap=\"nowrap\"><font size=\"-1\"><b>Web</b>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"ajax.php\">Ajax</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"news.php\">"._L("News")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"forum/\">"._L("Forum")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<b><a href=\"more.php\">"._L("more")."&nbsp;»</a></b></font></td></tr></tbody></table>
 <table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr><td width=\"25%\">&nbsp;</td><td align=\"center\"><input maxlength=\"256\" size=\"55\" name=\"q\" value=\"\" title=\""._L("Query")."\"><br><input value=\""._L("StarDict Query")."\" type=\"submit\"></td><td nowrap=\"nowrap\" valign=\"top\" width=\"25%\"><font size=\"-1\">&nbsp;&nbsp;<a href=\"preferences.php\">"._L("Preferences")."</a><br>&nbsp;&nbsp;<a href=\"dictmanage.php\">"._L("Dict Manage")."</a></font></td></tr></tbody></table>
-</form><br><a href=\"http://stardict.sourceforge.net\" target=\"_blank\">"._L("StarDict Project")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"selectandtrans.php\">"._L("Select and Translate")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"browserplugin.php\">"._L("Browser Plug-in")."</a><br><br>Sponsor: <a href=\"http://www.minigui.com\" target=\"_blank\">www.MiniGUI.com</a>";
+</form><br><a href=\"http://stardictd.sourceforge.net\" target=\"_blank\">"._L("StarDictd Project")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"selectandtrans.php\">"._L("Select and Translate")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"browserplugin.php\">"._L("Browser Plug-in")."</a><br><br>Sponsor: <a href=\"http://www.minigui.com\" target=\"_blank\">www.MiniGUI.com</a>";
 include 'end.inc.php';
 ob_end_flush();
 ?>

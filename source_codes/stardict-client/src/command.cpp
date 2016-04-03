@@ -92,7 +92,7 @@ struct cmd *make_command( int command, ... )
 		if (need_md5) {
 			struct MD5Context ctx;
 			MD5Init(&ctx);
-			MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+			MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 			MD5Update(&ctx, (const unsigned char*)new_passwd, strlen(new_passwd));
 			unsigned char digest[16];
 			MD5Final(digest, &ctx);
@@ -102,7 +102,19 @@ struct cmd *make_command( int command, ... )
 		}
 		std::string earg1, earg2, earg3;
 		arg_escape(earg1, user);
-		arg_escape(earg2, old_passwd);
+
+		char hex2[33];
+		struct MD5Context ctx;
+		MD5Init(&ctx);
+		MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+		MD5Update(&ctx, (const unsigned char*)old_passwd, strlen(old_passwd));
+		unsigned char digest[16];
+		MD5Final(digest, &ctx);
+		for (int i = 0; i < 16; i++)
+			snprintf( hex2+2*i, 3, "%02x", digest[i] );
+		hex2[32] = '\0';
+		arg_escape(earg2, hex2);
+
 		if (need_md5) {
 			arg_escape(earg3, hex);
 		} else {

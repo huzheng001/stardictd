@@ -55,11 +55,13 @@ public:
 	void SetDictMask(const gchar *dicts, int max, int userLevel);
 	void SetServerCollateFunc(int servercollatefunc);
 	void SetUserLang(const char *lang);
+	void SetUserLevel(int level);
 private:
 	int childSocket;
 	time_t startTime;
 	int servercollatefunc;
 	std::string UserLang;
+	int UserLevel;
 
 	int start_daemon();
 

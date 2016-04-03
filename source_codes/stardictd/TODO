@@ -1,1 +1,1 @@
-Make StardictdMain::ShowADs read info from configuration, but not the currently mixed in codes solution.
+Make StardictdMain::ShowADs read info from configuration, but not the currently mixed in source codes solution.

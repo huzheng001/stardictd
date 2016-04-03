@@ -29,8 +29,8 @@ $Translations = array (
 	'Browser Plug-in' => 'جاھاننامە قىستۇرمىسى',
 	'Advertising Programs' => 'ئېلان پىلانى',
 	'Web Tail' => '沪ICP备07003613号',
-	'Web Tail0' => 'ICP沪B2-20060156 译心译意网 版权所有2006 通用网址:译心译意,译心译意翻译网',
-	'Web Tail1' => 'Copyright 2006 1x1y.com.cn',
+	'Web Tail0' => 'ICP沪B2-20060156 译心译意网 版权所有2016 通用网址:译心译意,译心译意翻译网',
+	'Web Tail1' => 'Copyright 2016 1x1y.com.cn',
 	'Business Solutions' => 'سودا پىلانى',
 	'About StarDict' => 'StarDict ھەققىدە',
 	'You can choose <b><span id="maxdictcount">%s</span></b> dictionaries.' => 'سىز <b><span id="maxdictcount">%s</span></b> پارچە لۇغەت تاللىيالايسىز.',
@@ -85,5 +85,7 @@ $Translations = array (
 	'Email:' => 'ئېلخەت: ',
 	'Update' => 'يېڭىلاش',
 	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => 'ئەگەر سىز بۇرۇن StarDict ئۈچۈن كۈچ چىقارغان بولسىڭىز، <a href="mailto:huzheng001@gmail.com"> بىلەن ئالاقىلىشىڭ</a>، سىزنىڭ دەرىجىڭىزنى ھەقسىز يۇقۇرىلىتىپ قويىمەن!',
+
+	'Window default size' => '',
 	);
 ?>

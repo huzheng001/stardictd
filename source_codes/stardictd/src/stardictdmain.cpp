@@ -20,6 +20,7 @@ StardictdMain::StardictdMain() : oLibs(NULL, true, 2, 0)
 	conf = NULL;
 	logger = NULL;
 	servercollatefunc = 0;
+	UserLevel = 0;
 }
 
 StardictdMain::~StardictdMain()
@@ -200,6 +201,11 @@ void StardictdMain::SetServerCollateFunc(int _servercollatefunc)
 void StardictdMain::SetUserLang(const char *lang)
 {
 	UserLang = lang;
+}
+
+void StardictdMain::SetUserLevel(int level)
+{
+	UserLevel = level;
 }
 
 void StardictdMain::BuildResultData(std::vector<InstantDictIndex> &dictmask, const char* sWord, CurrentIndex *iIndex, const gchar *piIndexValidStr, int iLib, gchar ***pppWord, gchar ****ppppWordData, bool &bFound, gint Method)
@@ -411,12 +417,16 @@ void StardictdMain::ShowData(std::vector<InstantDictIndex> &dictmask, gchar ***W
 			net_write_str("");
                 }
         }
-	ShowADs();
+	if (UserLevel == 0) {
+		ShowADs();
+	}
 	net_write_str("");
 }
 
 void StardictdMain::ShowADs()
 {
+	// Need to move these codes to setting!
+
 	const char *bookname;
 	const char *word;
 	const char *definition;

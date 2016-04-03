@@ -29,8 +29,8 @@ $Translations = array (
 	'Select and Translate' => 'Выделить и Перевести',
 	'Browser Plug-in' => 'Плагин браузера',
 	'Advertising Programs' => 'Рекламные программы',
-	'Web Tail0' => 'ICP B2-20060156 (С) StarDict, 2006. Все права защищены.', // I don't really know how to translate it from Chinese ^^; ... so it's translated as "All rights reserved". ^_~
-	'Web Tail1' => 'Copyright 2006 1x1y.com.cn',
+	'Web Tail0' => 'ICP B2-20060156 (С) StarDict, 2016. Все права защищены.', // I don't really know how to translate it from Chinese ^^; ... so it's translated as "All rights reserved". ^_~
+	'Web Tail1' => 'Copyright 2016 1x1y.com.cn',
 	'Business Solutions' => 'Бизнес решения',
 	'About StarDict' => 'О СтарДикте',
 	'You can choose <b><span id="maxdictcount">%s</span></b> dictionaries.' => 'Вы можете выбрать <b><span id="maxdictcount">%s</span></b> словарей максимально.',
@@ -84,5 +84,7 @@ $Translations = array (
 	'Email:' => 'E-майл:',
 	'Update' => 'Обновление:',
 	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => 'Если Вы сделали какие-либо вклады в развитие Стардикта в прошлом, пожалуйста <a href="mailto:huzheng001@gmail.com">напишите мне</a> и я подниму Ваш аккаунт бесплатно!',
+
+	'Window default size' => '',
 	);
 ?>

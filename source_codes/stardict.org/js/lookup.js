@@ -118,21 +118,22 @@ function do_go_back() {
 }
 var timeId;
 var oldEntryValue;
+var nowWord;
 function on_entry_changed(e) {
 	var searchword = document.getElementById("entry").value;
 	if (!searchword)
 		return;
+	previousWord = nowWord;
+	nowWord = searchword;
 	if (e.keyCode == 27) {
 		previousWord = searchword;
 		clear_entry();
 		return;
-	}
-	if (e.keyCode == 13) {
+	} else if (e.keyCode == 13) {
 		if (timeId) {
 			window.clearTimeout(timeId);
 			timeId = false;
 		}
-		previousWord = searchword;
 		sendLookupRequest();
 		return;
 	}
@@ -223,5 +224,5 @@ function parseResult() {
 	}
 }
 function showInfo() {
-	document.getElementById("definition").innerHTML = "<center>Welcome to <b>www.StarDict.org</b></center><br>This website is the on-line version of <a href=\"http://stardict.sourceforge.net\" target=\"_blank\">StarDict</a>.<br>StarDict is a Cross-Platform and international dictionary written in Gtk2.<br>It has powerful features such as \"Glob-style pattern matching,\" \"Scan selected word,\" \"Fuzzy query,\" etc.<br><br>Here is an introduction to using StarDict:<br><br><b>1. Glob-style pattern matching</b><br>You can input strings containing \'*\' (wildcard) and \'?\' (joker) as the pattern. \'*\' matches an arbitrary, possibly empty, string, and \'?\' matches an arbitrary character. After pressing Enter, the words that match this pattern will be shown in the list.<br><b>2. Fuzzy query</b><br>When you can't remember how to spell a word exactly, you can try StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the similarity between two words, and gives the match results which are most similar to the word that you input. To create a fuzzy query, just input the word with a beginning \"/\", and then press Enter.<br><b>3. Full-text search</b><br>Full-text search searchs a word in the data. To create a Full-text search, just input the word with a beginning \"|\", and then press Enter. For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". If the words contain Space character, you can use \"\\ \", such as \"|apple\\ pie\", other escaping characters are \"\\\\\" for \'\\\', \"\\t\" for Tab and \"\\n\" for new line.<br><b>4. Special character search</b><br>If your words contain special characters, you can use \'\\\' to escape it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc\".<br><br>Any question or suggestion, just mail to <a href=\"mailto:huzheng001@gmail.com\">huzheng001@gmail.com</a>."
+	document.getElementById("definition").innerHTML = "<center>Welcome to <b>www.StarDict.org</b></center><br>This website is the on-line version of <a href=\"http://stardict-4.sourceforge.net\" target=\"_blank\">StarDict</a>.<br>StarDict is a Cross-Platform and international dictionary written in Gtk.<br>It has powerful features such as \"Glob-style pattern matching,\" \"Scan selected word,\" \"Fuzzy query,\" etc.<br><br>Here is an introduction to using StarDict:<br><br><b>1. Glob-style pattern matching</b><br>You can input strings containing \'*\' (wildcard) and \'?\' (joker) as the pattern. \'*\' matches an arbitrary, possibly empty, string, and \'?\' matches an arbitrary character. After pressing Enter, the words that match this pattern will be shown in the list.<br><b>2. Fuzzy query</b><br>When you can't remember how to spell a word exactly, you can try StarDict's Fuzzy query. It uses \"Levenshtein Edit Distance\" to compute the similarity between two words, and gives the match results which are most similar to the word that you input. To create a fuzzy query, just input the word with a beginning \"/\", and then press Enter.<br><b>3. Full-text search</b><br>Full-text search searchs a word in the data. To create a Full-text search, just input the word with a beginning \"|\", and then press Enter. For example, \"|ab cd\" searchs data which contain both \"ab\" and \"cd\". If the words contain Space character, you can use \"\\ \", such as \"|apple\\ pie\", other escaping characters are \"\\\\\" for \'\\\', \"\\t\" for Tab and \"\\n\" for new line.<br><b>4. Special character search</b><br>If your words contain special characters, you can use \'\\\' to escape it, for example, \"a\\*b\\?\" searchs \"a*b?\", \"\\/abc\" searchs \"/abc\".<br><br>Any question or suggestion, just mail to <a href=\"mailto:huzheng001@gmail.com\">huzheng001@gmail.com</a>."
 }

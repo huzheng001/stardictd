@@ -5,4 +5,4 @@ make
 strip src/stardict-client
 
 2) Copy stardict-client to www.stardict.org website.
-cp src/stardict-client /var/www/cgi-bin/
+cp src/stardict-client /var/www/html/www.stardict.org/

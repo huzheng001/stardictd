@@ -1,6 +1,6 @@
 var dict_is_ie = true;
-var dict_host = 'http://www.stardict.org/';
-var dict_help = 'http://www.stardict.org/selectandtrans.php';
+var dict_host = './';
+var dict_help = './selectandtrans.php';
 var dict_username = '';
 var dict_md5saltpasswd = '';
 var dict_partner = '';
@@ -47,7 +47,7 @@ var agt = navigator.userAgent.toLowerCase();
   h += '<tr><td width="100%">';
   h += '<iframe id="dictFrame" name="dictFrame" HEIGHT="220" src="about:blank" FRAMEBORDER="0" width="100%"></iframe>';
   h += '</td></tr><tr align="center"><td width="100%" height="20">';
-  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2006 ';
+  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2016 ';
   h += '<a href="http://www.stardict.org" target="_blank"><b><font color="#2EA8ED">StarDict.org</font></b></a> On-line Dictionaries.</font>';
   h += '</td></tr></table></fieldset></td></tr></table>';
   h += '</td></tr></table></div>';

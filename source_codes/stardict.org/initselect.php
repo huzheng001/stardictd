@@ -25,7 +25,7 @@ function _dictInit(){
   h += '<tr><td width="100%">';
   h += '<iframe id="_dictFrame" name="_dictFrame" HEIGHT="220" src="about:blank" FRAMEBORDER="0" width="100%"></iframe>';
   h += '</td></tr><tr align="center"><td width="100%" height="20">';
-  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2006 ';
+  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2016 ';
   h += '<a href="http://www.stardict.org" target="_blank"><b><font color="#2EA8ED">StarDict.org</font></b></a> On-line Dictionaries.</font>';
   h += '</td></tr></table></fieldset></td></tr></table>';
   h += '</td></tr></table>';
@@ -314,8 +314,8 @@ function _dictStatus(){
 }
 if(! document.getElementById('_dict_layer')){
 var _dict_is_ie = true;
-var _dict_host = 'http://www.stardict.org/';
-var _dict_help = "http://www.stardict.org/selectandtrans.php";
+var _dict_host = './';
+var _dict_help = "./selectandtrans.php";
 <?php
 $username = isset($_REQUEST['user'])?$_REQUEST['user']:"";
 $password = isset($_REQUEST['passwd'])?$_REQUEST['passwd']:"";

@@ -1,4 +1,4 @@
-﻿<php
+﻿<?php
 $Translations = array (
 	'Finance Center' => 'Finanzzentrum',
 	'My Account' => 'Mein Profil',
@@ -28,8 +28,8 @@ $Translations = array (
 	'Select and Translate' => 'Auswählen und Übersetzen',
 	'Browser Plug-in' => 'Browser Plug-in',
 	'Advertising Programs' => 'Werbeprogramme',
-	'Web Tail0' => 'ICPB2-20060156  2006: F.Werner',
-	'Web Tail1' => 'Copyright 2006 1x1y.com.cn',
+	'Web Tail0' => 'ICPB2-20060156  2016: F.Werner',
+	'Web Tail1' => 'Copyright 2016 1x1y.com.cn',
 	'Business Solutions' => 'Geschäftslösungen',
 	'About StarDict' => 'ÜberStarDict',
 	'You can choose <b><span id="maxdictcount">%s</span></b> dictionaries.' => 'Sie können bis zu <b><span id="maxdictcount">%s</span></b> Wörterbücher wählen',
@@ -58,7 +58,7 @@ $Translations = array (
 	'FAQ' => 'Fragen und Antworten',
 	'Dissatisfied Help us improve' => 'Unzufrieden? Hilf uns besser zu werden!',
 	'StarDict Home' => 'StarDict Homepage',
-	'Change <b>%s</b>\'s password.' => '<b>%s</b>'s Passwort ändern. ',
+	'Change <b>%s</b>\'s password.' => '<b>%s</b>\'s Passwort ändern. ',
 	'Current password:' => 'aktuelles Passwort:',
 	'New password:' => 'Neues Passwort:',
 	'Confirm new password:' => 'Passwort bestätigen:',
@@ -82,6 +82,8 @@ $Translations = array (
 	'Other Information:' => 'Weitere Informationen:',
 	'Email:' => 'eMail:',
 	'Update' => 'Update',
-	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => Wenn du irgendeinen Beitrag zu StarDict geleistet hast, bitte schreib',<a href="mailto:huzheng001@gmail.com">mir</a> und ich erweitere dein Profil kostenlos!',
+	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => 'Wenn du irgendeinen Beitrag zu StarDict geleistet hast, bitte schreib\',<a href="mailto:huzheng001@gmail.com">mir</a> und ich erweitere dein Profil kostenlos!',
+
+	'Window default size' => '',
 	);
->
+?>

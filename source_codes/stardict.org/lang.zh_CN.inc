@@ -29,8 +29,8 @@ $Translations = array (
 	'Browser Plug-in' => '浏览器插件',
 	'Advertising Programs' => '广告计划',
 	'Web Tail' => '沪ICP备07003613号',
-	'Web Tail0' => 'ICP沪B2-20060156 译心译意网 版权所有2006 通用网址:译心译意,译心译意翻译网',
-	'Web Tail1' => 'Copyright 2006 1x1y.com.cn',
+	'Web Tail0' => 'ICP沪B2-20060156 译心译意网 版权所有2016 通用网址:译心译意,译心译意翻译网',
+	'Web Tail1' => 'Copyright 2016 1x1y.com.cn',
 	'Business Solutions' => '商业方案',
 	'About StarDict' => '关于星际译王',
 	'You can choose <b><span id="maxdictcount">%s</span></b> dictionaries.' => '你可以选择 <b><span id="maxdictcount">%s</span></b> 部词典。',
@@ -85,5 +85,6 @@ $Translations = array (
 	'Email:' => '电子邮箱：',
 	'Update' => '更新',
 	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => '如果你以前对星际译王做过任何贡献，请<a href="mailto:huzheng001@gmail.com">跟我联系</a>，我将免费把你的帐号进行升级！',
+	'Window default size' => '窗口默认大小',
 	);
 ?>

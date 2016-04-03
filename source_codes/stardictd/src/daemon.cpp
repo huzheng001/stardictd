@@ -109,6 +109,7 @@ static void daemon_auth(std::string &user, std::string &key)
 		}
 		userID = row[0];
 		userLevel = atoi(row[2]);
+		stardictdMain.SetUserLevel(userLevel);
 		buf = g_strdup_printf("%s%s", daemonStamp, row[1]);
 		res->destroy();
 	}
@@ -196,17 +197,7 @@ static void daemon_change_password(std::string &user, std::string &old_passwd, s
 			daemon_printf( "%d user doesn't exist\n", CODE_DENIED );
 			return;
 		}
-		struct MD5Context ctx;
-		MD5Init(&ctx);
-		MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
-		MD5Update(&ctx, (const unsigned char*)old_passwd.c_str(), old_passwd.length());
-		unsigned char digest[16];
-		MD5Final(digest, &ctx);
-		char hex[33];
-		for (int i = 0; i < 16; i++)
-			snprintf( hex+2*i, 3, "%02x", digest[i] );
-		hex[32] = '\0';
-		if (strcmp(hex, row[0])) {
+		if (old_passwd != row[0]) {
 			res->destroy();
 			daemon_printf( "%d old password is wrong\n", CODE_DENIED );
 			return;

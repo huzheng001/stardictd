@@ -8,7 +8,7 @@ session_start();
 include 'head.php';
 ?>
 </center><br>
-If you want to download StarDict, visit <a href="http://stardict.sourceforge.net" target="_blank">StarDict Project</a>.<br>
+If you want to download StarDict, visit <a href="http://stardict-4.sourceforge.net" target="_blank">StarDict Project</a>.<br>
 If you have any question, read <a href="faq.php">FAQ</a> first.<br>
 You can contact <a href="mailto:huzheng001@gmail.com">huzheng001@gmail.com</a> if you meet some problem when using StarDict.<center>
 <?php

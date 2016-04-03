@@ -1,8 +1,8 @@
 Just extract the files is OK.
 
-Then compile stardict-client, strip it and copy it to "/var/www/cgi-bin/".
+Then compile stardict-client, strip it and copy it to "/var/www/html/www.stardict.org/".
 
-Install "policycoreutils-python" and "checkpolicy" packages.
+Install "auditd", "policycoreutils-python-utils" and "checkpolicy" packages.
 Run:
 grep stardict-client /var/log/audit/audit.log | audit2allow -M mypol
 semodule -i mypol.pp
@@ -13,5 +13,5 @@ magic_quotes_gpc = Off
 if you are using php version before 5.4.0!
 
 You may need to edit backend.php file, change:
-$cmd="../../cgi-bin/stardict-client ";
+$cmd="./stardict-client ";
 to fit your real "stardict-client" file path!

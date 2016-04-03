@@ -63,6 +63,8 @@ $Translations = array (
 	'Email:' => '이메일:',
 	'Update' => '업그레이드',
 	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => 'StarDict에 조금이라도 기여하신 분은，<a href="mailto:huzheng001@gmail.com">여기</a>를 눌러 메일을 보내주세요. 무료로 당신의 계정을 업그레이드 해드리겠습니다.',
+
+	'Window default size' => '',
 	);
 ?>
 

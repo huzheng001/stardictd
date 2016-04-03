@@ -1,7 +1,7 @@
 <?php
 function call_stardict_client($args)
 {
-	$cmd="../../cgi-bin/stardict-client ";
+	$cmd="./stardict-client ";
 	$cmd .= $args;
 	$handle=popen($cmd, "r");
 	$content = "";

@@ -2,6 +2,8 @@ Just extract the files is OK.
 
 Then compile stardict-client, strip it and copy it to "/var/www/html/www.stardict.org/".
 
+Needn't now:
+=====
 Install "auditd", "policycoreutils-python-utils" and "checkpolicy" packages.
 Run:
 grep stardict-client /var/log/audit/audit.log | audit2allow -M mypol
@@ -15,3 +17,20 @@ if you are using php version before 5.4.0!
 You may need to edit backend.php file, change:
 $cmd="./stardict-client ";
 to fit your real "stardict-client" file path!
+=====
+
+You can create your own language translation!
+Such as:
+lang.zh_CN.inc
+lang.zh_TW.inc
+lang.de_DE.inc
+lang.ko.inc
+lang.ru_RU.inc
+lang.sk.inc
+lang.uyghur.inc
+
+You can edit "js/lookup.js", search:
+// You can translate the next texts!
+and do translation!
+
+

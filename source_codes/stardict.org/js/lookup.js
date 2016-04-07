@@ -68,12 +68,34 @@ function handlePWordStateChange() {
 }
 function handleNWordStateChange() {
 	if (xmlHttp.readyState == 4) {
-		pcontent = '<div onmouseover="this.className=\'son\'" onmouseout="this.className=\'\'" onclick="doPreviousWord()"><font color="blue">Previous Words</font></div>';
+		var lang;
+		lang = getCookie("StarDict_language");
+
+		var linkname;
+
+		// You can translate the next texts!
+		if (lang == "zh_CN") {
+			linkname = '上一个单词';
+		} else {
+			linkname = 'Previous Words';
+		}
+		pcontent = '<div onmouseover="this.className=\'son\'" onmouseout="this.className=\'\'" onclick="doPreviousWord()"><font color="blue">';
+		pcontent += linkname;
+		pcontent += '</font></div>';
 		var wordList = xmlHttp.responseText.split('\n');
 		for (var w in wordList) {
 			pcontent += '<div onmouseover="this.className=\'son\'" onmouseout="this.className=\'\'" onclick="wlist_click(this)">' + escapeHTML(wordList[w]) + "</div>";
 		}
-		pcontent += '<div onmouseover="this.className=\'son\'" onmouseout="this.className=\'\'" onclick="doNextWord()"><font color="blue">Next Words</font></div>';
+
+		// You can translate the next texts!
+		if (lang == "zh_CN") {
+			linkname = '下一个单词';
+		} else {
+			linkname = 'Next Words';
+		}
+		pcontent += '<div onmouseover="this.className=\'son\'" onmouseout="this.className=\'\'" onclick="doNextWord()"><font color="blue">';
+		pcontent += linkname;
+		pcontent += '</font></div>';
 		var wordlist = document.getElementById("wordlist");
 		wordlist.innerHTML = pcontent;
 	}

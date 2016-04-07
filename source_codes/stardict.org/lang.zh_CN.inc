@@ -86,5 +86,6 @@ $Translations = array (
 	'Update' => '更新',
 	'If you have done any contribution to StarDict ago, please <a href="mailto:huzheng001@gmail.com">mail me</a> and I will upgrade your account for Free!' => '如果你以前对星际译王做过任何贡献，请<a href="mailto:huzheng001@gmail.com">跟我联系</a>，我将免费把你的帐号进行升级！',
 	'Window default size' => '窗口默认大小',
+	'StarDictd Project' => 'StarDictd 项目',
 	);
 ?>

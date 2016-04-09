@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.59)
-AC_INIT(stardictd, 0.5, http://stardictd.sourceforge.net)
+AC_INIT(stardictd, 0.5.1, http://stardictd.sourceforge.net)
 AC_CONFIG_SRCDIR([src/main.cpp])
 AM_INIT_AUTOMAKE([dist-xz])
 AC_CONFIG_HEADER([config.h])

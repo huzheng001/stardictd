@@ -12,4 +12,6 @@ stardict_client_SOURCES = \
 	command.cpp command.h \
 	printdata.cpp printdata.h \
 	md5.c md5.h \
+	rsa.cpp rsa.h \
+	base64.cpp base64.h \
 	codes.h

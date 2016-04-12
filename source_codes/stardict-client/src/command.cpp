@@ -7,6 +7,8 @@
 
 #include "net.h"
 #include "md5.h"
+#include "rsa.h"
+#include "base64.h"
 #include "printdata.h"
 #include "codes.h"
 
@@ -15,6 +17,10 @@
 struct reply {
 	std::string daemonStamp;
 } cmd_reply;
+
+
+static int RSA_Public_Key_e[RSA_MAX];
+static int RSA_Public_Key_n[RSA_MAX];
 
 static GSList* cmd_list = NULL;
 
@@ -72,12 +78,23 @@ struct cmd *make_command( int command, ... )
 				snprintf( hex+2*i, 3, "%02x", digest[i] );
 			hex[32] = '\0';
 		}
+
+		std::string passwd1;
+		if (need_md5) {
+			passwd1 = hex;
+		} else {
+			passwd1 = passwd;
+		}
+		std::vector<unsigned char> v;
+		string_to_vector(passwd1, v);
+		std::vector<unsigned char> v2;
+		rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
+		std::string base64_rsa_passwd;
+		base64_encode(v2, base64_rsa_passwd);
+
 		std::string earg1, earg2, earg3;
 		arg_escape(earg1, user);
-		if (need_md5)
-			arg_escape(earg2, hex);
-		else
-			arg_escape(earg2, passwd);
+		arg_escape(earg2, base64_rsa_passwd.c_str());
 		arg_escape(earg3, email);
 		c->data = g_strdup_printf("register %s %s %s\n", earg1.c_str(), earg2.c_str(), earg3.c_str());
 		break;
@@ -113,13 +130,30 @@ struct cmd *make_command( int command, ... )
 		for (int i = 0; i < 16; i++)
 			snprintf( hex2+2*i, 3, "%02x", digest[i] );
 		hex2[32] = '\0';
-		arg_escape(earg2, hex2);
 
+		std::string old_passwd1 = hex2;
+		std::vector<unsigned char> v;
+		string_to_vector(old_passwd1, v);
+		std::vector<unsigned char> v2;
+		rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
+		std::string base64_rsa_old_passwd;
+		base64_encode(v2, base64_rsa_old_passwd);
+
+		arg_escape(earg2, base64_rsa_old_passwd.c_str());
+
+		std::string new_passwd1;
 		if (need_md5) {
-			arg_escape(earg3, hex);
+			new_passwd1 = hex;
 		} else {
-			arg_escape(earg3, new_passwd);
+			new_passwd1 = new_passwd;
 		}
+		string_to_vector(new_passwd1, v);
+		rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
+		std::string base64_rsa_new_passwd;
+		base64_encode(v2, base64_rsa_new_passwd);
+
+		arg_escape(earg3, base64_rsa_new_passwd.c_str());
+
 		c->data = g_strdup_printf("change_password %s %s %s\n", earg1.c_str(), earg2.c_str(), earg3.c_str());
 		break;
 	}
@@ -356,11 +390,31 @@ static bool process_banner()
 		}
 		return true;
 	}
-	const char *p;
-	p = strrchr(buf.c_str(), ' ');
+	char *p, *p1, *p2;
+	p = g_strstr_len(buf.c_str(), buf.length(), "<auth>");
 	if (p) {
-		p++;
-		cmd_reply.daemonStamp = p;
+		p += 6;
+		p1 = strchr(p, '<');
+		if (p1) {
+			p2 = strchr(p1, '>');
+			if (p2) {
+				cmd_reply.daemonStamp.assign(p1, p2+1-p1);
+			}
+		}
+	}
+	std::string RSA_Public_Key;
+	p = g_strstr_len(buf.c_str(), buf.length(), "<rsa_public_key>");
+	if (p) {
+		p += 16;
+		p1 = strchr(p, '<');
+		if (p1) {
+			p1++;
+			p2 = strchr(p1, '>');
+			if (p2) {
+				RSA_Public_Key.assign(p1, p2-p1);
+				rsa_public_key_str_to_bin(RSA_Public_Key, RSA_Public_Key_e, RSA_Public_Key_n);
+			}
+		}
 	}
 	return false;
 }

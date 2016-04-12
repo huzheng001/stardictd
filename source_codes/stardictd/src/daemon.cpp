@@ -1,6 +1,8 @@
 #include "daemon.h"
 #include "net.h"
 #include "md5.h"
+#include "rsa.h"
+#include "base64.h"
 #include "stardictdmain.h"
 
 #include <glib.h>
@@ -15,6 +17,9 @@
 #include "codes.h"
 
 #define BUFFERSIZE 10240
+
+int RSA_Public_Key_d[RSA_MAX];
+int RSA_Public_Key_n[RSA_MAX];
 
 static char         daemonStamp[256] = "";
 static std::string auth_user;
@@ -168,8 +173,21 @@ static void daemon_auth(std::string &user, std::string &key)
 	}
 }
 
-static void daemon_change_password(std::string &user, std::string &old_passwd, std::string &new_passwd)
+static void daemon_change_password(std::string &user, std::string &base64_rsa_md5saltsum_old_password, std::string &base64_rsa_md5saltsum_new_password)
 {
+	std::vector<unsigned char> v;
+	base64_decode(base64_rsa_md5saltsum_old_password, v);
+	std::vector<unsigned char> v2;
+	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
+	std::string old_passwd;
+	vector_to_string(v2, old_passwd);
+
+	base64_decode(base64_rsa_md5saltsum_new_password, v);
+	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
+	std::string new_passwd;
+	vector_to_string(v2, new_passwd);
+
+
 	if (new_passwd.length()!=32) {
 		daemon_printf( "%d wrong new password\n", CODE_DENIED );
 		return;
@@ -215,8 +233,15 @@ static void daemon_change_password(std::string &user, std::string &old_passwd, s
 	daemon_printf( "%d\n", CODE_OK );
 }
 
-static void daemon_register(std::string &user, std::string &password, std::string &email)
+static void daemon_register(std::string &user, std::string &base64_rsa_md5saltsum_password, std::string &email)
 {
+	std::vector<unsigned char> v;
+	base64_decode(base64_rsa_md5saltsum_password, v);
+	std::vector<unsigned char> v2;
+	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
+	std::string password;
+	vector_to_string(v2, password);
+
 	if (user.length()>16 || password.length()!=32 || strchr(email.c_str(), '@')==NULL) {
 		daemon_printf( "%d invalid parameter\n", CODE_DENIED );
 		return;
@@ -833,11 +858,16 @@ static void daemon_banner()
 		(int) getpid(),
 		(long unsigned)t,
 		hostname );
-	daemon_printf( "%d %s %s <auth> %s\n",
+
+	static std::string public_key;
+	if (public_key.empty()) {
+		rsa_get_public_key_str(public_key);
+	}
+	daemon_printf( "%d %s %s <auth> %s <rsa_public_key> <%s>\n",
 			CODE_HELLO,
 			hostname,
 			"stardictd-0.5",
-			daemonStamp);
+			daemonStamp, public_key.c_str());
 	g_free(hostname);
 }
 

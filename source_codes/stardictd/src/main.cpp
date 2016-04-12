@@ -7,10 +7,14 @@
 #include <locale.h>
 #include <string.h>
 #include <stdlib.h>
+#include "rsa.h"
 
 #include "stardictdmain.h"
+#include "daemon.h"
 
 extern ServiceMain *serviceMain;
+
+
 
 #ifndef UID_NOBODY
 #define UID_NOBODY  65534
@@ -52,6 +56,10 @@ int main(int argc, char *argv[])
 		net_detach();
 	release_root_privileges();
 	setlocale (LC_ALL,"");
+
+	rsa_init();
+	rsa_gen_key(RSA_Public_Key_d, RSA_Public_Key_n);
+
 
 	if (serviceMain->init(argc, argv))
 		serviceMain->run();

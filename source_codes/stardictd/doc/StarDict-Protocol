@@ -4,8 +4,8 @@ StarDict-Protocol 0.4
 
 The StarDict Server Protocol is a TCP transaction based query/response protocol that allows a client to access dictionary definitions from a set of natural language dictionary databases. It is inspired by DICT protocol, see rfc2229.
 
-The protocol 0.3 version works with StarDict-3.0.x, as stardictd-0.4.
-The protocol 0.4 version works with StarDict-4.0.x, as stardictd-0.5 and above.
+The protocol 0.3 version works with StarDict-3.0.x, as stardictd-0.4.1.
+The protocol 0.4 version works with StarDict-4.0.x, as stardictd-0.5.1 and above.
 
 
 1.1 Request
@@ -35,7 +35,7 @@ The real content is decided by the corresponding command. It may be ommited if t
 2. Command and Response Details
 
 2.1 Initial Connection
-When a client initially connects to a StarDict server, a code 220 is sent if the client's IP is allowed to connect: "220 hostname stardictd-version <auth> msg-id". The last sequence of characters in the banner is a msg-id. This message id will be used by the client when formulating the authentication string used in the AUTH command. If the client's IP is not allowed to connect, then a code 530 is sent instead: "530 Access denied". Transient failure responses are also possible: "420 Server temporarily unavailable", "421 Server shutting down at operator request".
+When a client initially connects to a StarDict server, a code 220 is sent if the client's IP is allowed to connect: "220 hostname stardictd-version <auth> msg-id <rsa_public_key> <public_key_str>". The msg-id begin with < and end with >. This message id will be used by the client when formulating the authentication string used in the AUTH command. The public_key_str is used for RSA encryption. If the client's IP is not allowed to connect, then a code 530 is sent instead: "530 Access denied". Transient failure responses are also possible: "420 Server temporarily unavailable", "421 Server shutting down at operator request".
 
 2.2 The CLIENT Command
 This command allows the client to provide information about itself for possible logging and statistical purposes.  All clients SHOULD send this command after connecting to the server.
@@ -134,17 +134,19 @@ If the response is ""CODE_OK", the DictResult will be followed.
 The difference between QUERY and SELECTQUERY is that SELECTQUERY will try to analyze the selected_word, while QUERY will search it directly. So SELECTQUERY is suitable to search the user selected words, while QUERY is suitable to search the user inputed words.
 
 2.9 The REGISTER Command
-Command: "register username password-md5saltsum email".
-You needn't send the password to the server, but only password's MD5 salt checksum, so even the server won't know your original password.
+Command: "register username base64_rsa_md5saltsum_password email".
+You needn't send the password to the server, but only password's MD5 salt checksum, with RSA encrypt and base64 encoding, so even the server won't know your original password and others can't steal your password through Internet.
 =====
 MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
+rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
+base64_encode(v2, base64_rsa_passwd);
 =====
 Responses: "CODE_OK", "CODE_DENIED deny reason".
 
 2.10 The CHANGE_PASSWD Command
-Command: "change_password username old_password new_password-md5sum".
-You need to send the original old password to the server, so even others get to know your password-md5sum, he/she still can't change your password.
+Command: "change_password username base64_rsa_md5saltsum_old_password base64_rsa_md5saltsum_new_password".
+You needn't send the original old password to the server(only the md5saltsum), so even others get to know your password-md5saltsum, he/she still don't know your original password. As with RSA encryption, others can't know your password-md5saltsum through Internet too!
 Responses: "CODE_OK", "CODE_DENIED".
 
 2.11 The SET_DICT_MASK Command
@@ -273,4 +275,4 @@ If you have any questions, email me. :)
 
 Hu Zheng <huzheng001@gmail.com>
 http://www.huzheng.org
-2015.12.15
+2016.4.11

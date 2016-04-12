@@ -16,6 +16,8 @@ stardictd_SOURCES = \
 	conf.h conf.cpp \
 	log.h log.cpp \
 	md5.h md5.c \
+	rsa.h rsa.cpp \
+	base64.h base64.cpp \
 	db.h db.cpp \
 	servicemain.h servicemain.cpp	\
 	stardictdmain.h stardictdmain.cpp

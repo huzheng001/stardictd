@@ -8,7 +8,7 @@ include 'head.php';
 include 'mydomain.inc';
 
 echo "<br><table border=\"1\"><tr><td><b>"._L('How to use "Select and Translate" in other web page?')."</b><br>"._L('Bookmark the next link, or just drag it to your toolbar:')."<br>";
-echo "<a href=\"javascript:void((function() {var element=document.createElement('script'); element.setAttribute('src', 'http://".$mydomain_www_stardict_org."/js/initselect.js";
+echo "<a href=\"javascript:void((function() {var element=document.createElement('script'); element.setAttribute('src', 'http://".$mydomain_www_stardict_org."/initselect.php";
 $username = isset($_SESSION['username'])?$_SESSION['username']:"";
 $password = isset($_SESSION['password'])?$_SESSION['password']:"";
 if ($username!="" && $password!="") {

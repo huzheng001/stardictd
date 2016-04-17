@@ -1,3 +1,8 @@
+var mydomain_StarDict_org = "StarDict.net";
+var mydomain_www_stardict_org = "www.stardict.net";
+var mydomain_www_StarDict_org = "www.StarDict.net";
+
+
 function _dictInit(){
   var agt = navigator.userAgent.toLowerCase();
   _dict_is_ie = (agt.indexOf("msie")!=-1 && document.all);
@@ -7,7 +12,7 @@ function _dictInit(){
   h += '"><tr><td>';
   h += '<div width="100%" style="cursor:move;background-color:#C8DAF3;border:0px;" onmouseover="_dict_onmove=1;" onmouseout="_dict_onmove=0;">' ;
   h += '<table width="100%"><tr><td align="left" width="80%" style="background-color:#C8DAF3;">';
-  h += '<div style="color:#1A9100;font-size:14px;background-color:#C8DAF3;">Select and Translate - StarDict.org</div>';
+  h += '<div style="color:#1A9100;font-size:14px;background-color:#C8DAF3;">Select and Translate - ' + mydomain_StarDict_org + '</div>';
   h += '</td>';
   h += '<td align="right" style="background-color:#C8DAF3;">';
   h += '<a href="'+_dict_help+'" target="_blank" title="Help">';
@@ -26,7 +31,7 @@ function _dictInit(){
   h += '<iframe id="_dictFrame" name="_dictFrame" HEIGHT="220" src="about:blank" FRAMEBORDER="0" width="100%"></iframe>';
   h += '</td></tr><tr align="center"><td width="100%" height="20">';
   h += '<font color="#000000" size="1" face="Arial">&copy;2003-2016 ';
-  h += '<a href="http://www.stardict.org" target="_blank"><b><font color="#2EA8ED">StarDict.org</font></b></a> On-line Dictionaries.</font>';
+  h += '<a href="http://' + mydomain_www_stardict_org + '" target="_blank"><b><font color="#2EA8ED">' + mydomain_StarDict_org '</font></b></a> On-line Dictionaries.</font>';
   h += '</td></tr></table></fieldset></td></tr></table>';
   h += '</td></tr></table>';
   try{

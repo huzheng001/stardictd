@@ -5,8 +5,10 @@
 <?php
 session_start();
 include 'head.php';
+include 'mydomain.inc';
+
 echo "<br><table border=\"1\"><tr><td><b>"._L('How to use "Select and Translate" in other web page?')."</b><br>"._L('Bookmark the next link, or just drag it to your toolbar:')."<br>";
-echo "<a href=\"javascript:void((function() {var element=document.createElement('script'); element.setAttribute('src', 'http://www.stardict.org/initselect.php";
+echo "<a href=\"javascript:void((function() {var element=document.createElement('script'); element.setAttribute('src', 'http://".$mydomain_www_stardict_org."/js/initselect.js";
 $username = isset($_SESSION['username'])?$_SESSION['username']:"";
 $password = isset($_SESSION['password'])?$_SESSION['password']:"";
 if ($username!="" && $password!="") {
@@ -24,7 +26,7 @@ echo "<br>"._L("Then open any web page, and click the StarDict link on your tool
 <br><br><table border="1">
 <tr><td><b>How to add "Select and Translate" in your website?</b><br>
 Put these codes in your website:<br><i>
-&lt;script src=&quot;http://www.stardict.org/js/stardict.js&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;<br>
+&lt;script src=&quot;<?php echo "http://".$mydomain_www_stardict_org."/js/stardict.js" ?>&quot; type=&quot;text/javascript&quot;&gt;&lt;/script&gt;<br>
 &lt;script type=&quot;text/javascript&quot;&gt;<br>
 dictInit();<br>
 &lt;/script&gt;</i><hr>
@@ -36,16 +38,16 @@ If you want to show a "Enable translate opinion" in your webpage, put these code
 </td></tr>
 <tr><td><small>* If you want to disable "Select and Translate" by default, add <b><i>dict_enable=false;</i></b> before <b><i>dictInit();</i></b></small></td></tr></table>
 <br><b>Provide Dictionary Lookup Service in your website.</b><table border="1"><tr><td>Insert these codes in your web page:</td><td>Preview:</td></tr><tr><td><p><i>&lt;form method=&quot;post&quot; target=&quot;_blank&quot;<br>
-action=&quot;http://www.stardict.org/query.php&quot;&gt;<br>
+action=&quot;<?php echo "http://".$mydomain_www_stardict_org."/query.php" ?>&quot;&gt;<br>
 &lt;input maxlength=256 size=21 name=q /&gt;&lt;br&gt;<br>
-&lt;a href=&quot;http://www.stardict.org&quot; target=&quot;_blank&quot;&gt;StarDict&lt;/a&gt;<br>
+&lt;a href=&quot;<?php echo "http://".$mydomain_www_stardict_org ?>&quot; target=&quot;_blank&quot;&gt;StarDict&lt;/a&gt;<br>
 &lt;input type=&quot;hidden&quot; name=&quot;cs&quot; value=&quot;UTF-8&quot; /&gt;<br>
 &lt;input type=&quot;submit&quot; value=&quot;Look Up&quot; /&gt;<br>
 &lt;/form&gt;</i></p></td><td>
 <form method="post" target="_blank" 
 action="query.php">
 <input maxlength=256 size=21 name=q /><br>
-<a href="http://www.stardict.org" target="_blank">StarDict</a>
+<a href="http://<?php echo $mydomain_www_stardict_org ?>" target="_blank">StarDict</a>
 <input type="hidden" name="cs" value="UTF-8" />
 <input type="submit" value="Look Up" />
 </form>

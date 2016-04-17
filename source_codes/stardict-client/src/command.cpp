@@ -275,9 +275,9 @@ struct cmd *make_command( int command, ... )
 	case CMD_USER_LEVEL:
 	{
 		std::string earg1, earg2, earg3;
-		arg_escape(earg1, va_arg( ap, const char * ));
-		arg_escape(earg2, va_arg( ap, const char * ));
-		arg_escape(earg3, va_arg( ap, const char * ));
+		arg_escape(earg1, va_arg( ap, const char * )); // username
+		arg_escape(earg2, va_arg( ap, const char * )); // fromlevel
+		arg_escape(earg3, va_arg( ap, const char * )); // tolevel
 		c->data = g_strdup_printf("userlevel %s %s %s\n", earg1.c_str(), earg2.c_str(), earg3.c_str());
 		break;
 	}

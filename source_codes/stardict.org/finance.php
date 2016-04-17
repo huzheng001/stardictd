@@ -23,6 +23,9 @@ if ($username=="" || $password=="") {
 	} else {
 		printf(_L("You are level %d user currently."), $content);
 		if ($content=="0") {
+			echo "<br><br><b><a href=\"http://www.huzheng.org/donate.php\" target=\"_BLANK\"><font color=\"#FFFA00\">Donate to Hu Zheng!</font></a></b><br>";
+
+/*
 echo "<br><table border=\"1\"><tr><td>";
 printf(_L("Upgrade to Level %d user:"), 1);
 echo "<center><form action=\"https://www.paypal.com/cgi-bin/webscr\" method=\"post\">
@@ -159,6 +162,8 @@ printf(_L("Level %d user can choose %d dictionaries."), 5, 55);
 echo "<br>";
 printf(_L("Use full-text search for %d times in one hour."), 50);
 echo "</td></tr></table>";
+
+*/
 		} else if ($content=="1") {
 		} else if ($content=="2") {
 		} else if ($content=="3") {

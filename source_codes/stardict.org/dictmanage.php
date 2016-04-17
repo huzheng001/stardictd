@@ -21,7 +21,7 @@ if ($username!="" && $password!="") {
 	include_once 'backend.php';
 	$content = call_stardict_client($args);
 	$result = explode("", $content);
-	echo "<table width=\"100%\"><tr><td width=\"45%\"><div style='overflow-x:auto; height:380px;'><ul class=\"tree\">";
+	echo "<table width=\"100%\"><tr><td width=\"45%\"><div style='overflow-x:auto; height:420px;'><ul class=\"tree\">";
 	echo $result[0];
 	echo "</ul></div></td><td width=\"5%\"><div id=\"load\" style=\"display:none\"><img src=\"images/loading.gif\"></div></td><td width=\"50%\" valign=\"top\" align=\"right\"><table width=\"100%\"><tr><td><table><tr><td><div>";
 	printf(_L('You can choose <b><span id="maxdictcount">%s</span></b> dictionaries.'), $result[1]);

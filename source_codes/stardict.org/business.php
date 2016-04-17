@@ -6,9 +6,10 @@
 <?php
 session_start();
 include 'head.php';
+include 'mydomain.inc';
 ?>
 <br>
-www.stardict.org use stardictd as the server back end.<br>We will only provide stardictd to advance user.<br>You can go to <a href="finance.php">Finance</a> page to upgrade your account first, then contact us, if you want to get a copy of it.
+<?php echo $mydomain_www_stardict_org; ?> use stardictd as the server back end.<br>We will only provide stardictd to advance user.<br>You can go to <a href="finance.php">Finance</a> page to upgrade your account first, then contact us, if you want to get a copy of it.
 <?php
 include 'end.inc.php';
 ob_end_flush();

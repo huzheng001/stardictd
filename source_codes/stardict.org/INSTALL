@@ -31,6 +31,13 @@ lang.uyghur.inc
 
 You can edit "js/lookup.js", search:
 // You can translate the next texts!
-and do translation!
+and do translation! You can send your changes to me!
 
+You can edit these files and change the website domain name:
+mydomain.inc
+js/stardict.js
+js/initselect.js
+js/search-plugin.js
+js/lookup.js
+files/stardict.src
 

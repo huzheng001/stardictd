@@ -1,4 +1,7 @@
-<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="left"><a href="index.php">www.StarDict.org</a></td><td align="center"><span id="dict_status"></span></td><td align="right" nowrap="nowrap"><font size="-1">
+<?php
+include 'mydomain.inc';
+?>
+<table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td align="left"><a href="index.php"><?php echo $mydomain_www_StarDict_org; ?></a></td><td align="center"><span id="dict_status"></span></td><td align="right" nowrap="nowrap"><font size="-1">
 <?php
 $username = isset($_SESSION['username'])?$_SESSION['username']:"";
 $password = isset($_SESSION['password'])?$_SESSION['password']:"";
@@ -16,7 +19,7 @@ if ($username!="" && $password!="") {
 		echo "<b>".$cookie_username."</b>";
 	} else {
 		$logged_in = FALSE;
-		echo "<a href=\"login.php\">Sign in</a>";
+		echo "<a href=\"login.php\">Sign in</a> <a href=\"register.php\">Register</a>";
 	}
 }
 $language = isset($_SESSION['language'])?$_SESSION['language']:"";

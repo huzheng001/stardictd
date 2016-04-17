@@ -30,11 +30,19 @@ static void daemon_printf( const char *format, ... )
 {
 	va_list ap;
 	char buf[BUFFERSIZE];
+	int size;
 
 	va_start( ap, format );
-	vsnprintf( buf, sizeof (buf), format, ap );
+	size = vsnprintf( buf, sizeof(buf), format, ap );
 	va_end( ap );
-	net_write(buf, strlen(buf));
+	if (size < 0) {
+		printf("vsnprintf() error!\n");
+		return;
+	} else if (size >= sizeof(buf)) {
+		printf("vsnprintf() full!\n");
+		return;
+	}
+	net_write(buf, size);
 }
 
 static void daemon_ok( int code, const char *string)

@@ -41,7 +41,7 @@ $args.= "-qs ".$equeryword;
 include_once 'backend.php';
 echo call_stardict_client($args);
 if ($username=="" || $password=="") {
-	echo "<br>You are guest user, try to <a href=\"http://www.stardict.org/register.php\" target=\"_blank\">Register</a> an account and choose your custom dictionaries.";
+	echo "<br>You are guest user, try to <a href=\"register.php\" target=\"_blank\">Register</a> an account and choose your custom dictionaries.";
 }
 echo "</body></html>";
 ob_end_flush();

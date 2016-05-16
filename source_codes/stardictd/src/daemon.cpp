@@ -38,7 +38,7 @@ static void daemon_printf( const char *format, ... )
 	if (size < 0) {
 		printf("vsnprintf() error!\n");
 		return;
-	} else if (size >= sizeof(buf)) {
+	} else if (size >= BUFFERSIZE) {
 		printf("vsnprintf() full!\n");
 		return;
 	}

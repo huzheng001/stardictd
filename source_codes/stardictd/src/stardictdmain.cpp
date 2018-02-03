@@ -175,12 +175,13 @@ void StardictdMain::run()
 				} else {
 					dict_daemon(childSocket, delay_time, max_cost_time, 1);
 				}
-				exit(0);
+				exit(0); // Prevent super software ability!
 			} else { /* parent */
 				close(childSocket);
 			}
 		} else {
 			dict_daemon(childSocket, delay_time, max_cost_time, 2);
+			exit(0); // Prevent super software ability!
 		}
 	}
 }

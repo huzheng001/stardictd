@@ -60,7 +60,7 @@ google_color_text = "000000";
   src="http://pagead2.googlesyndication.com/pagead/show_ads.js">
 </script>
 <?php
-echo "</td><td width=\"20%\" valign=\"top\"><a href=\"preferences.php\">"._L("Preferences")."</a><br><a href=\"dictmanage.php\">"._L("Dict Manage")."</a><br><br><a href=\"ajax_win_default.php\">"._L("Window default size")."</a><br><br><a href=\"http://stardict-4.sourceforge.net\" target=\"_blank\">"._L("StarDict Project")."</a><br><a href=\"selectandtrans.php\">"._L("Select and Translate")."</a><br><a href=\"browserplugin.php\">"._L("Browser Plug-in")."</a><br><br>";
+echo "</td><td width=\"20%\" valign=\"top\"><a href=\"preferences.php\">"._L("Preferences")."</a><br><a href=\"dictmanage.php\">"._L("Dict Manage")."</a><br><br><a href=\"ajax_win_default.php\">"._L("Window default size")."</a><br><br><a href=\"http://stardictd.sourceforge.net\" target=\"_blank\">"._L("StarDictd Project")."</a><br><a href=\"selectandtrans.php\">"._L("Select and Translate")."</a><br><a href=\"browserplugin.php\">"._L("Browser Plug-in")."</a><br><br>";
 ?>
 <script type="text/javascript"><!--
 google_ad_client = "pub-7493326633307702";

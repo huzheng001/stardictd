@@ -1,2 +1,2 @@
 EXTRA_DIST = \
-	StarDict-Protocol
+	StarDict-Protocol_v04

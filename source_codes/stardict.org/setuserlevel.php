@@ -8,7 +8,7 @@ if ($rootpassword=="" || $user=="" || $fromlevel=="" || $tolevel=="") {
 	echo "Invalid parameters.";
 } else {
 	include_once 'arg.php';
-	$erootpassword = encode_command_arg(md5("StarDict".$rootpassword));
+	$erootpassword = encode_command_arg(md5($rootpassword."StarDict"));
 	$euser = encode_command_arg($user);
 	$efromlevel = encode_command_arg($fromlevel);
 	$etolevel = encode_command_arg($tolevel);

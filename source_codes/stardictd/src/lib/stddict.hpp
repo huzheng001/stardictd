@@ -152,8 +152,8 @@ private:
 
 	bool load_ifofile(const std::string& ifofilename, gulong &idxfilesize, glong &wordcount, glong &synwordcount);
 public:
-	std::auto_ptr<index_file> idx_file;
-	std::auto_ptr<synonym_file> syn_file;
+	std::unique_ptr<index_file> idx_file;
+	std::unique_ptr<synonym_file> syn_file;
 	ResourceStorage *storage;
 
 	Dict();

@@ -4,8 +4,8 @@ StarDict-Protocol 0.4
 
 The StarDict Server Protocol is a TCP transaction based query/response protocol that allows a client to access dictionary definitions from a set of natural language dictionary databases. It is inspired by DICT protocol, see rfc2229.
 
-The protocol 0.3 version works with StarDict-3.0.x, as stardictd-0.4.1.
-The protocol 0.4 version works with StarDict-4.0.x, as stardictd-0.5.1 and above.
+The protocol 0.3 version works with StarDict-3.0.0 to StarDict-3.0.6, as stardictd-0.4.1.
+The protocol 0.4 version works with StarDict-3.0.7, StarDict-4.0.x, StarDict-5.0.x, StarDict-6.0.x, as stardictd-0.5.1 and above.
 
 
 1.1 Request
@@ -52,8 +52,8 @@ The client can authenticate itself to the server using a username and password. 
 Command: "auth username auth-string"
 The auth-string is the MD5 checksum of the concatenation of the msg-id (obtained from the initial banner) and the user password's MD5 salt checksum.
 =====
-MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 // Get md5saltpasswd !
 
 MD5Update(&ctx, (const unsigned char*)cmd_reply.daemonStamp.c_str(), cmd_reply.daemonStamp.length()); // msg-id
@@ -137,8 +137,8 @@ The difference between QUERY and SELECTQUERY is that SELECTQUERY will try to ana
 Command: "register username base64_rsa_md5saltsum_password email".
 You needn't send the password to the server, but only password's MD5 salt checksum, with RSA encrypt and base64 encoding, so even the server won't know your original password and others can't steal your password through Internet.
 =====
-MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
 rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
 base64_encode(v2, base64_rsa_passwd);
 =====
@@ -275,4 +275,4 @@ If you have any questions, email me. :)
 
 Hu Zheng <huzheng001@gmail.com>
 http://www.huzheng.org
-2016.4.11
+2020.10.31

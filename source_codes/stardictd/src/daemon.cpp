@@ -2,7 +2,6 @@
 #include "net.h"
 #include "md5.h"
 #include "rsa.h"
-#include "base64.h"
 #include "stardictdmain.h"
 
 #include <glib.h>
@@ -183,14 +182,21 @@ static void daemon_auth(std::string &user, std::string &key)
 
 static void daemon_change_password(std::string &user, std::string &base64_rsa_md5saltsum_old_password, std::string &base64_rsa_md5saltsum_new_password)
 {
+	gsize out_len;
+	guchar *base64_buf = g_base64_decode(base64_rsa_md5saltsum_old_password.c_str(), &out_len);
 	std::vector<unsigned char> v;
-	base64_decode(base64_rsa_md5saltsum_old_password, v);
+	buffer_to_vector(base64_buf, out_len, v);
+	g_free(base64_buf);
+
 	std::vector<unsigned char> v2;
 	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
 	std::string old_passwd;
 	vector_to_string(v2, old_passwd);
 
-	base64_decode(base64_rsa_md5saltsum_new_password, v);
+	base64_buf = g_base64_decode(base64_rsa_md5saltsum_new_password.c_str(), &out_len);
+	buffer_to_vector(base64_buf, out_len, v);
+	g_free(base64_buf);
+
 	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
 	std::string new_passwd;
 	vector_to_string(v2, new_passwd);
@@ -243,8 +249,12 @@ static void daemon_change_password(std::string &user, std::string &base64_rsa_md
 
 static void daemon_register(std::string &user, std::string &base64_rsa_md5saltsum_password, std::string &email)
 {
+	gsize out_len;
+	guchar *base64_buf = g_base64_decode(base64_rsa_md5saltsum_password.c_str(), &out_len);
 	std::vector<unsigned char> v;
-	base64_decode(base64_rsa_md5saltsum_password, v);
+	buffer_to_vector(base64_buf, out_len, v);
+	g_free(base64_buf);
+
 	std::vector<unsigned char> v2;
 	rsa_decrypt(v, v2, RSA_Public_Key_d, RSA_Public_Key_n);
 	std::string password;

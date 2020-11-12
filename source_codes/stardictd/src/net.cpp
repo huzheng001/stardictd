@@ -78,7 +78,7 @@ int net_open_tcp (const char *address, int port, int queueLength)
 	memset(&addr, 0, sizeof(addr));
 	addr.sin_family = AF_INET;
 	addr.sin_addr.s_addr = inet_addr("127.0.0.1");
-	addr.sin_port = htons(2628);
+	addr.sin_port = htons(2629);
 	bind(s, (struct sockaddr *)&addr, sizeof(addr));
 	listen(s, 10);
 	return s;*/

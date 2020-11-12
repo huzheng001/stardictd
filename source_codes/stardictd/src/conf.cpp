@@ -1,3 +1,4 @@
+
 #include "conf.h"
 #include <stdio.h>
 #include <glib.h>
@@ -5,7 +6,7 @@
 Conf::Conf()
 {
 	int_map["server/process_limit"] = 300;
-	int_map["server/port"] = 2628;
+	int_map["server/port"] = 2629;
 	int_map["server/log_level"] = 4; // LOG_INFORMATION
 	str_map["database/host"] = "localhost";
 	int_map["database/port"] = 3306;

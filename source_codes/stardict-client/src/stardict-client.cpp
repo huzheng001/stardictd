@@ -61,7 +61,7 @@ int main( int argc, char **argv )
 	append_command(false, make_command( CMD_CLIENT, "0.4", "stardict-client" ) );
 
 	const char *host = "127.0.0.1";
-	const char *port = "2628";
+	const char *port = "2629";
 	int i;
 	bool append_sep;
 	for (i=1; i< argc; i++) {

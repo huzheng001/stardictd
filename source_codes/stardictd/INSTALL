@@ -17,7 +17,11 @@ http://www.mysql.com
 For simplicity, we assume that the database name, user name and
 user password are all 'stardict', But you can change this if you want.
 
+For new installed mysql server, create root password by this:
+mysqladmin -u root password '123456'
+
 a) Add a new user and a new database:
+shell> sudo su -
 shell> mysql -uroot -p
 mysql> CREATE DATABASE stardict;
 mysql> GRANT ALL ON stardict.* TO stardict@localhost IDENTIFIED BY 'stardict';
@@ -82,7 +86,7 @@ stardictd hard nofile 10240
 If you login by ssh, you need to edit /etc/pam.d/login too:
 session required pam_limits.so
 
-If you installed too many dictionaries, as stardictd will mmap all the .dict.dz files into virtual memory, if the memory size of stardictd process become bigger than 4G, then there will be problem. The solution is run src/tools/undictzip, which convert .dict.dz files to .dict files, then the virtual memory size can become small again as use fopen instead of mmap.
+If you installed too many dictionaries, as stardictd will mmap all the .dict.dz files into virtual memory, if the memory size of stardictd process become bigger than 4G, then there will be problem. The solution is run stardictd-0.5.3/src/tools/undictzip, which convert .dict.dz files to .dict files, then the virtual memory size can become small again as use fopen instead of mmap.
 
 
 4) Run stardictd:

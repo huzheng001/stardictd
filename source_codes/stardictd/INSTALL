@@ -41,7 +41,7 @@ Then edit this file to suit your needs.
 
 Notice: you sould "chmod 0600 stardictd.conf" to make this file is not readable by other users, as it contains the database user password and root-user password.
 
-Note: if you changed the database user password, you need to modify the "stardictd.conf" file too.
+Note: if you changed the database user password, you need to modify the "stardictd.conf" file too!
 
 Note: you can edit [info]/ad_info to your own website link.
 

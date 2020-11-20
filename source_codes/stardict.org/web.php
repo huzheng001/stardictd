@@ -21,7 +21,11 @@ if ($cookindex!="web") {
 session_start();
 include 'head.php';
 ?>
-<img src="images/logo.gif" alt="StarDict" height="110" width="286"><br><br>
+<img src="images/logo.gif" alt="StarDict" height="110" width="286">
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=6,0,29,0" width="1024" height="100"><param name="movie" value="./stardict_zh_CN.swf"><br><param name="quality" value="high"><embed src="./stardict_zh_CN.swf" quality="high" pluginspage="http://www.macromedia.com/go/getflashplayer" type="application/x-shockwave-flash" width="1024" height="100"></embed></object>
+
+<br><br><br>
 <form action="query.php" name="f">
 <?php
 	echo "<table border=\"0\" cellpadding=\"4\" cellspacing=\"0\"><tbody><tr><td nowrap=\"nowrap\"><font size=\"-1\"><b>Web</b>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"ajax.php\">Ajax</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"news.php\">"._L("News")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<a href=\"forum/\">"._L("Forum")."</a>&nbsp;&nbsp;&nbsp;&nbsp;<b><a href=\"more.php\">"._L("more")."&nbsp;»</a></b></font></td></tr></tbody></table>

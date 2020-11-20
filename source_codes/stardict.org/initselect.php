@@ -30,7 +30,7 @@ function _dictInit(){
   h += '<tr><td width="100%">';
   h += '<iframe id="_dictFrame" name="_dictFrame" HEIGHT="220" src="about:blank" FRAMEBORDER="0" width="100%"></iframe>';
   h += '</td></tr><tr align="center"><td width="100%" height="20">';
-  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2016 ';
+  h += '<font color="#000000" size="1" face="Arial">&copy;2003-2020 ';
   h += '<a href="http://' + mydomain_www_stardict_org + '" target="_blank"><b><font color="#2EA8ED">' + mydomain_StarDict_org + '</font></b></a> On-line Dictionaries.</font>';
   h += '</td></tr></table></fieldset></td></tr></table>';
   h += '</td></tr></table>';

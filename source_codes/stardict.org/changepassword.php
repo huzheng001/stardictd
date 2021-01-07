@@ -10,7 +10,7 @@ if ($username=="" || $oldpassword=="" || $newpassword=="" || $newpassword!=$newp
 	include_once 'arg.php';
 	$eusername = encode_command_arg($username);
 	$eoldpassword =  encode_command_arg($oldpassword);
-	$md5saltnewpassword = md5($newpassword."StarDict");
+	$md5saltnewpassword = md5("LoveCher".$newpassword."StarDict");
 	$enewpassword = encode_command_arg($md5saltnewpassword);
 	$args = "-cr ".$eusername." ".$eoldpassword." ".$enewpassword;
 	include_once 'backend.php';

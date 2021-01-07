@@ -89,8 +89,9 @@ static void daemon_auth(std::string &user, std::string &key)
 			return;
 		}
 		MD5Init(&ctx);
+		MD5Update(&ctx,  (const unsigned char*)"LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 		MD5Update(&ctx, (const unsigned char*)root_password.c_str(), root_password.length());
-		MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+		MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 		MD5Final(digest, &ctx);
 		for (int i = 0; i < 16; i++)
 			snprintf( hex+2*i, 3, "%02x", digest[i] );

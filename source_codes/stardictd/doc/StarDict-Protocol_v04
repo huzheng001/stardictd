@@ -52,8 +52,9 @@ The client can authenticate itself to the server using a username and password. 
 Command: "auth username auth-string"
 The auth-string is the MD5 checksum of the concatenation of the msg-id (obtained from the initial banner) and the user password's MD5 salt checksum.
 =====
+MD5Update(&ctx, "LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
-MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 // Get md5saltpasswd !
 
 MD5Update(&ctx, (const unsigned char*)cmd_reply.daemonStamp.c_str(), cmd_reply.daemonStamp.length()); // msg-id
@@ -137,8 +138,9 @@ The difference between QUERY and SELECTQUERY is that SELECTQUERY will try to ana
 Command: "register username base64_rsa_md5saltsum_password email".
 You needn't send the password to the server, but only password's MD5 salt checksum, with RSA encrypt and base64 encoding, so even the server won't know your original password and others can't steal your password through Internet.
 =====
+MD5Update(&ctx, "LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
-MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+MD5Update(&ctx, "StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 rsa_encrypt(v, v2, RSA_Public_Key_e, RSA_Public_Key_n);
 base64_encode(v2, base64_rsa_passwd);
 =====

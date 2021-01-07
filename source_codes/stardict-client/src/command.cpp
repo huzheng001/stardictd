@@ -69,8 +69,9 @@ struct cmd *make_command( int command, ... )
 		if (need_md5) {
 			struct MD5Context ctx;
 			MD5Init(&ctx);
+			MD5Update(&ctx,  (const unsigned char*)"LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 			MD5Update(&ctx, (const unsigned char*)passwd, strlen(passwd));
-			MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+			MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 			unsigned char digest[16];
 			MD5Final(digest, &ctx);
 			for (int i = 0; i < 16; i++)
@@ -111,8 +112,9 @@ struct cmd *make_command( int command, ... )
 		if (need_md5) {
 			struct MD5Context ctx;
 			MD5Init(&ctx);
+			MD5Update(&ctx, (const unsigned char*)"LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 			MD5Update(&ctx, (const unsigned char*)new_passwd, strlen(new_passwd));
-			MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+			MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 			unsigned char digest[16];
 			MD5Final(digest, &ctx);
 			for (int i = 0; i < 16; i++)
@@ -125,8 +127,9 @@ struct cmd *make_command( int command, ... )
 		char hex2[33];
 		struct MD5Context ctx;
 		MD5Init(&ctx);
+		MD5Update(&ctx, (const unsigned char*)"LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 		MD5Update(&ctx, (const unsigned char*)old_passwd, strlen(old_passwd));
-		MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+		MD5Update(&ctx, (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 		unsigned char digest[16];
 		MD5Final(digest, &ctx);
 		for (int i = 0; i < 16; i++)
@@ -344,8 +347,9 @@ bool request_command(struct cmd *c)
 			int i;
 			if (c->auth.need_md5) {
 				MD5Init(&ctx);
+				MD5Update(&ctx,  (const unsigned char*)"LoveCher", 8); //StarDict-Protocol 0.4, add front md5 salt.
 				MD5Update(&ctx, (const unsigned char*)c->auth.passwd, strlen(c->auth.passwd));
-				MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add md5 salt.
+				MD5Update(&ctx,  (const unsigned char*)"StarDict", 8); //StarDict-Protocol 0.4, add end md5 salt.
 				MD5Final(digest, &ctx );
 				for (i = 0; i < 16; i++)
 					sprintf( hex+2*i, "%02x", digest[i] );

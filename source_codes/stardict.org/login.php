@@ -6,7 +6,7 @@ if ($username=="" || $password=="") {
 } else {
 	include_once 'arg.php';
 	$eusername = encode_command_arg($username);
-	$md5saltpassword = md5($password."StarDict");
+	$md5saltpassword = md5("LoveCher".$password."StarDict");
 	$epassword = encode_command_arg($md5saltpassword);
 	$args = "-ar ".$eusername." ".$epassword;
 	include_once 'backend.php';

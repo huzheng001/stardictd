@@ -1,5 +1,6 @@
 1) Build stardict-client.
 ==============================
+./autogen.sh
 ./configure
 make
 strip src/stardict-client

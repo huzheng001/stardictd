@@ -5,6 +5,7 @@ shell> adduser stardictd
 b) Upload stardictd-0.5.3.tar.xz to /home/stardictd/
 shell> tar -xJvf stardictd-0.5.3.tar.xz
 shell> cd stardictd-0.5.3
+shell> ./autogen.sh
 shell> ./configure
 shell> make
 shell> strip src/stardictd
